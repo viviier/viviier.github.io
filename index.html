@@ -236,6 +236,156 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/25/css Flex和BFC 学习笔记/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="John Doe">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/25/css Flex和BFC 学习笔记/" itemprop="url">
+                  css Flex和BFC 学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-25T23:38:44+08:00">
+                2016-12-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="Flex"><a href="#Flex" class="headerlink" title="Flex"></a>Flex</h3><h4 id="语法篇"><a href="#语法篇" class="headerlink" title="语法篇"></a>语法篇</h4><p>对全部语法感兴趣的可以去查阅文档，这里只说几个常用到的以及个别坑：</p>
+<ol>
+<li>display: flex || line-flex</li>
+<li>flex-direction: row || row-reverse || column || column-reverse</li>
+<li>justify-content: flex-start || flex-end || center || space-between || space-around</li>
+<li>align-items: flex-start || flex-end || center || baseline  // 这里说一下baseline 以项目的第一行文字对齐</li>
+<li>align-content: 同justify-content</li>
+<li>order: 数值越小 排列越靠前</li>
+<li>flex-basis: 将项目占据固定的空间，有些flex布局才有效果</li>
+<li>flex: 一般用于设置项目所占的大小比例</li>
+<li>align-self: 同align-items</li>
+<li>另外，设置了flex布局后，子元素的float,clear,vertical-align属性会失效</li>
+</ol>
+<h4 id="实例篇"><a href="#实例篇" class="headerlink" title="实例篇"></a>实例篇</h4><h5 id="flex圣杯布局"><a href="#flex圣杯布局" class="headerlink" title="flex圣杯布局"></a>flex圣杯布局</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">header</span>&gt;</span>header<span class="tag">&lt;/<span class="name">header</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"main"</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"left"</span>&gt;</span>left<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"center"</span>&gt;</span>center<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">    <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"right"</span>&gt;</span>right<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">footer</span>&gt;</span>footer<span class="tag">&lt;/<span class="name">footer</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 对应的css --&gt;</span></div><div class="line">.container &#123;</div><div class="line">  height: 500px;</div><div class="line">  display: flex;</div><div class="line">  flex-direction: column;</div><div class="line">  text-align: center;</div><div class="line">&#125;</div><div class="line">.main &#123;</div><div class="line">  flex: 1;</div><div class="line">  display: flex;</div><div class="line">&#125;</div><div class="line"></div><div class="line">header,footer &#123;</div><div class="line">  height: 60px;</div><div class="line">  background-color: #ccc;</div><div class="line">  line-height: 60px;</div><div class="line">&#125;</div><div class="line">.left &#123;</div><div class="line">  flex: 1;</div><div class="line">  background-color: #f00;</div><div class="line">&#125;</div><div class="line">.center &#123;</div><div class="line">  flex: 3;</div><div class="line">  background-color: #f0f;</div><div class="line">&#125;</div><div class="line">.right &#123;</div><div class="line">  flex: 1;</div><div class="line">  background-color: #0f0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="BFC（块级格式化上下文）"><a href="#BFC（块级格式化上下文）" class="headerlink" title="BFC（块级格式化上下文）"></a>BFC（块级格式化上下文）</h3><p>BFC是一个独立的布局环境，其中的元素布局不受外界影响。</p>
+<p>触发BFC的方式：</p>
+<ol>
+<li>position不为static，relative</li>
+<li>float的值不为none</li>
+<li>overflow的值不为visible</li>
+<li>display的值不为inline，block，none</li>
+</ol>
+<p>触发BFC能解决什么？</p>
+<ol>
+<li>外边距重叠</li>
+<li>包含浮动（类似清除浮动）</li>
+</ol>
+<h5 id="外边距重叠"><a href="#外边距重叠" class="headerlink" title="外边距重叠"></a>外边距重叠</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item1<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item2<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 对应的css --&gt;</span></div><div class="line"><span class="tag">&lt;<span class="name">style</span>&gt;</span><span class="undefined"></span></div><div class="line"> .container &#123;</div><div class="line">  background-color: #ccc;</div><div class="line">&#125;</div><div class="line">p &#123;</div><div class="line">  margin: 10px 0;</div><div class="line">&#125;</div><div class="line"><span class="tag">&lt;/<span class="name">style</span>&gt;</span></div></pre></td></tr></table></figure>
+<p>这样设置的margin就会触发重叠，item2和item以及item3之间的间距并不会相加为20px，而都是10px，想要解决这种问题，就可以触发BFC。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item1<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"new-bfc"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item2<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line">   <span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">p</span>&gt;</span>item3<span class="tag">&lt;/<span class="name">p</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line">    <span class="comment">&lt;!-- 对应的css --&gt;</span></div><div class="line">.container &#123;</div><div class="line">  background-color: #ccc;</div><div class="line">&#125;</div><div class="line">.new-bfc &#123;</div><div class="line">  overflow: hidden;</div><div class="line">&#125;</div><div class="line">p &#123;</div><div class="line">  margin: 10px 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>通过overflow:hidden 触发bfc之后，外边距就不会重叠在一起了。</p>
+<h5 id="包含浮动"><a href="#包含浮动" class="headerlink" title="包含浮动"></a>包含浮动</h5><figure class="highlight html"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"container"</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span>123<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line">  <span class="tag">&lt;<span class="name">div</span> <span class="attr">class</span>=<span class="string">"box"</span>&gt;</span>123<span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"><span class="tag">&lt;/<span class="name">div</span>&gt;</span></div><div class="line"></div><div class="line"><span class="comment">&lt;!-- 对应的css --&gt;</span></div><div class="line">.container &#123;</div><div class="line">  background-color: #ccc;</div><div class="line">  border:1px solid #ccc;</div><div class="line">&#125;</div><div class="line">.box &#123;</div><div class="line">  float: left;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>浮动塌陷，父元素无法获得能够撑开资源的高度。我们通常使用clearfix hack方法，不过用bfc也可以解决这个问题。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">.container &#123;</div><div class="line">  background-color: #ccc;</div><div class="line">  border:1px solid #ccc;</div><div class="line">  overflow: hidden;</div><div class="line">&#125;</div><div class="line">.box &#123;</div><div class="line">  float: left;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>同样，通过overflow:hidden来触发bfc，解决浮动元素塌陷。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/14/Javascript 原型继承和面向委托的设计模式/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1077,7 +1227,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">6</span>
+              <span class="site-state-item-count">7</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
@@ -1087,7 +1237,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">1</span>
+                <span class="site-state-item-count">2</span>
                 <span class="site-state-item-name">Tags</span>
               </a>
             </div>

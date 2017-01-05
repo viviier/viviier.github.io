@@ -183,7 +183,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Startseite
+            Home
           </a>
         </li>
       
@@ -193,7 +193,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archiv
+            Archives
           </a>
         </li>
       
@@ -226,6 +226,155 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/05/ECMAScrpit6 学习笔记/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/01/05/ECMAScrpit6 学习笔记/" itemprop="url">
+                  ECMAScrpit6 学习笔记
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-05T23:20:43+08:00">
+                2017-01-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="let-and-const"><a href="#let-and-const" class="headerlink" title="let and const"></a>let and const</h3><h4 id="let"><a href="#let" class="headerlink" title="let"></a>let</h4><blockquote>
+<p>原来的javascript中没有块级作用域，只有函数级作用域。在es6中，使用let声明的变量具有块级作用域。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;  <span class="comment">//  if不是函数，没有块级作用域</span></div><div class="line">  <span class="keyword">var</span> nico = <span class="string">'nico'</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'nihao'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(nico)  <span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">// 隔壁二狗说，我要块级作用域</span></div><div class="line"><span class="keyword">if</span>(<span class="literal">true</span>) &#123;</div><div class="line">  <span class="keyword">let</span> nico = <span class="string">'nico'</span></div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'nihao'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(nico)  <span class="comment">// undefined</span></div></pre></td></tr></table></figure>
+<h4 id="const"><a href="#const" class="headerlink" title="const"></a>const</h4><blockquote>
+<p>const也具有块级作用域，且const声明的值不可修改</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> NICO_AGE = <span class="number">12</span></div><div class="line">NICO_AGE = <span class="number">18</span>  <span class="comment">//SyntaxError</span></div></pre></td></tr></table></figure>
+<h3 id="Template-String"><a href="#Template-String" class="headerlink" title="Template String"></a>Template String</h3><blockquote>
+<p>空格和换行都会被保留</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 传统的字符串</span></div><div class="line"><span class="keyword">var</span> name = <span class="string">'es6'</span></div><div class="line"></div><div class="line"><span class="keyword">var</span> sayhello = <span class="string">'hello,my name is '</span> + name</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(sayhello)</div><div class="line"></div><div class="line"><span class="comment">// 隔壁二狗说，要优雅</span></div><div class="line"><span class="keyword">let</span> name = <span class="string">'es6'</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> sayHello = <span class="string">`hello, my name is <span class="subst">$&#123;name&#125;</span>`</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(sayHello)</div></pre></td></tr></table></figure>
+<h3 id="Arrow-Function"><a href="#Arrow-Function" class="headerlink" title="Arrow Function"></a>Arrow Function</h3><blockquote>
+<p>箭头函数自动绑定当前上下文的this</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> (<span class="params">a, b</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(a + b);</div><div class="line">    <span class="keyword">return</span> a + b;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 隔壁二狗说，嗯哼，麻烦</span></div><div class="line"> (a,b) =&gt; &#123;</div><div class="line">  <span class="built_in">console</span>.log(a + b)</div><div class="line">  <span class="keyword">return</span> a + b</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><blockquote>
+<p>原生的 Promise 实现，不再需要 bluebird 或 Q+。</p>
+</blockquote>
+<h3 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h3><blockquote>
+<p>Generator生成器允许你通过写一个可以保存自己状态的简单函数来定义一个迭代算法。和Generator一起出现的通常还有yield。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> *<span class="title">gen</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">yield</span> <span class="string">'hello'</span></div><div class="line">  <span class="keyword">yield</span> <span class="string">'world'</span></div><div class="line">  <span class="keyword">return</span> <span class="literal">true</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>Generator（迭代生成器）与普通函数的区别是function关键字后面有个*号，函数体内可以使用yield语句进行流程控制</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> iter = gen()</div><div class="line"><span class="keyword">let</span> a = iter.next()</div><div class="line"><span class="built_in">console</span>.log(a)  <span class="comment">// &#123;value: 'hello', done: false&#125;</span></div><div class="line"><span class="keyword">let</span> b = iter.next()</div><div class="line"><span class="built_in">console</span>.log(b)  <span class="comment">// &#123;value: 'world', done: false&#125;</span></div><div class="line"><span class="keyword">let</span> c = iter.next()</div><div class="line"><span class="built_in">console</span>.log(c)  <span class="comment">// &#123;value: true, done: true&#125;</span></div></pre></td></tr></table></figure>
+<p>执行gen()的时候，返回一个迭代器iterator，迭代器具有next()方法，每次调用next()，函数就执行到yield语句的地方。next()方法返回一个对象，value属性表示yield关键字后面表达式的值，done属性表示是否遍历结束。generator生成器通过next和yield的配合实现流程控制，上面的代码执行了三次next()，generator函数体才执行完毕。</p>
+<h3 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h3><blockquote>
+<p>在Javascript中引入OO面向对象。</p>
+</blockquote>
+<figure class="highlight plain"><figcaption><span>Point(x,y)&#123;</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">  this.x = x</div><div class="line">  this.y = y</div><div class="line">&#125;</div><div class="line"></div><div class="line">Point.prototype.toString = function () &#123;</div><div class="line">  return &apos;(&apos; + this.x + &apos;, &apos; + this.y + &apos;)&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var lent = new Point(1, 5)</div><div class="line">console.log(lent.toString())</div><div class="line"></div><div class="line">// 隔壁二狗说，我要Class</div><div class="line">class Point &#123;</div><div class="line">  constructor(x ,y) &#123;</div><div class="line">    this.x = x</div><div class="line">    this.y = y</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  toString() &#123;</div><div class="line">    return `($&#123;this.x&#125;, $&#123;this.y&#125;)`</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let pointo = new Point(1, 5)</div><div class="line">console.log(pointo.toString())</div></pre></td></tr></table></figure>
+<h3 id="ES6-Module"><a href="#ES6-Module" class="headerlink" title="ES6 Module"></a>ES6 Module</h3><h4 id="export-and-import"><a href="#export-and-import" class="headerlink" title="export and import"></a>export and import</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> firstName = <span class="string">'arashi'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> lastName = <span class="string">'nico'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> year = <span class="number">2017</span></div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> &#123; firstName, lastName, year&#125; <span class="keyword">from</span> <span class="string">'./lls'</span></div></pre></td></tr></table></figure>
+<h4 id="模块整体输出"><a href="#模块整体输出" class="headerlink" title="模块整体输出"></a>模块整体输出</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> firstName = <span class="string">'nico'</span></div><div class="line"><span class="keyword">let</span> lastName = <span class="string">'arashi'</span></div><div class="line"><span class="keyword">let</span> year = <span class="number">2017</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> &#123; firstName, lastName, year&#125;</div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> * <span class="keyword">as</span> Lls <span class="keyword">from</span> <span class="string">'./lls'</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(Lls.firstName,Lls.lastName, Lls.year)</div></pre></td></tr></table></figure>
+<h4 id="export-default整体输出"><a href="#export-default整体输出" class="headerlink" title="export default整体输出"></a>export default整体输出</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'My name is nico'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> sayName <span class="keyword">from</span> <span class="string">'./lls'</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(sayName())</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -275,7 +424,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-04T22:51:38+08:00">
                 2017-01-04
               </time>
@@ -429,7 +578,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-30T22:21:58+08:00">
                 2016-12-30
               </time>
@@ -562,7 +711,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-28T23:51:31+08:00">
                 2016-12-28
               </time>
@@ -687,7 +836,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-25T23:38:44+08:00">
                 2016-12-25
               </time>
@@ -837,7 +986,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-14T22:32:43+08:00">
                 2016-12-14
               </time>
@@ -965,7 +1114,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-13T20:44:54+08:00">
                 2016-12-13
               </time>
@@ -1124,7 +1273,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-11T22:36:03+08:00">
                 2016-12-11
               </time>
@@ -1243,7 +1392,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-06T22:34:17+08:00">
                 2016-12-06
               </time>
@@ -1402,7 +1551,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <span class="post-meta-item-text">Posted on</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T22:26:18+08:00">
                 2016-12-05
               </time>
@@ -1473,134 +1622,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/04/hello-world/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="ant">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Hexo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/04/hello-world/" itemprop="url">
-                  Hello World
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-04T11:44:25+08:00">
-                2016-12-04
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1639,8 +1667,8 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">10</span>
-              <span class="site-state-item-name">Artikel</span>
+              <span class="site-state-item-count">11</span>
+              <span class="site-state-item-name">posts</span>
             </a>
           </div>
 
@@ -1650,7 +1678,7 @@
             <div class="site-state-item site-state-tags">
               <a href="/tags">
                 <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">Tags</span>
+                <span class="site-state-item-name">tags</span>
               </a>
             </div>
           
@@ -1698,7 +1726,7 @@
 
 
 <div class="powered-by">
-  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

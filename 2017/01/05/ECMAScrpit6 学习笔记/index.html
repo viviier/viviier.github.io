@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="ecmascript 6," />
 
 
 
@@ -96,7 +96,7 @@
 原来的javascript中没有块级作用域，只有函数级作用域。在es6中，使用let声明的变量具有块级作用域。
 
 1234567891011121314if(true) &amp;#123;  //  if不是函数，没有块级作用域  var nico = &apos;nico&apos;  console.log(&apos;nihao&apos;)&amp;#125;console.log(nico)  // &apos;ni">
-<meta property="og:updated_time" content="2017-01-05T15:24:17.000Z">
+<meta property="og:updated_time" content="2017-01-06T14:03:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ECMAScrpit6 学习笔记">
 <meta name="twitter:description" content="let and constlet
@@ -194,7 +194,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -204,7 +204,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -283,7 +283,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-05T23:20:43+08:00">
                 2017-01-05
               </time>
@@ -349,7 +349,7 @@
 <h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><blockquote>
 <p>在Javascript中引入OO面向对象。</p>
 </blockquote>
-<figure class="highlight plain"><figcaption><span>Point(x,y)&#123;</span></figcaption><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">  this.x = x</div><div class="line">  this.y = y</div><div class="line">&#125;</div><div class="line"></div><div class="line">Point.prototype.toString = function () &#123;</div><div class="line">  return &apos;(&apos; + this.x + &apos;, &apos; + this.y + &apos;)&apos;</div><div class="line">&#125;</div><div class="line"></div><div class="line">var lent = new Point(1, 5)</div><div class="line">console.log(lent.toString())</div><div class="line"></div><div class="line">// 隔壁二狗说，我要Class</div><div class="line">class Point &#123;</div><div class="line">  constructor(x ,y) &#123;</div><div class="line">    this.x = x</div><div class="line">    this.y = y</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  toString() &#123;</div><div class="line">    return `($&#123;this.x&#125;, $&#123;this.y&#125;)`</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">let pointo = new Point(1, 5)</div><div class="line">console.log(pointo.toString())</div></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Point</span>(<span class="params">x,y</span>)</span>&#123;</div><div class="line">  <span class="keyword">this</span>.x = x</div><div class="line">  <span class="keyword">this</span>.y = y</div><div class="line">&#125;</div><div class="line"></div><div class="line">Point.prototype.toString = <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="string">'('</span> + <span class="keyword">this</span>.x + <span class="string">', '</span> + <span class="keyword">this</span>.y + <span class="string">')'</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> lent = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line"><span class="built_in">console</span>.log(lent.toString())</div><div class="line"></div><div class="line"><span class="comment">// 隔壁二狗说，我要Class</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Point</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(x ,y) &#123;</div><div class="line">    <span class="keyword">this</span>.x = x</div><div class="line">    <span class="keyword">this</span>.y = y</div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  toString() &#123;</div><div class="line">    <span class="keyword">return</span> <span class="string">`(<span class="subst">$&#123;<span class="keyword">this</span>.x&#125;</span>, <span class="subst">$&#123;<span class="keyword">this</span>.y&#125;</span>)`</span></div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> pointo = <span class="keyword">new</span> Point(<span class="number">1</span>, <span class="number">5</span>)</div><div class="line"><span class="built_in">console</span>.log(pointo.toString())</div></pre></td></tr></table></figure>
 <h2 id="ES6-Module"><a href="#ES6-Module" class="headerlink" title="ES6 Module"></a>ES6 Module</h2><h3 id="export-and-import"><a href="#export-and-import" class="headerlink" title="export and import"></a>export and import</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> firstName = <span class="string">'arashi'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> lastName = <span class="string">'nico'</span></div><div class="line"><span class="keyword">export</span> <span class="keyword">let</span> year = <span class="number">2017</span></div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> &#123; firstName, lastName, year&#125; <span class="keyword">from</span> <span class="string">'./lls'</span></div></pre></td></tr></table></figure>
 <h3 id="模块整体输出"><a href="#模块整体输出" class="headerlink" title="模块整体输出"></a>模块整体输出</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> firstName = <span class="string">'nico'</span></div><div class="line"><span class="keyword">let</span> lastName = <span class="string">'arashi'</span></div><div class="line"><span class="keyword">let</span> year = <span class="number">2017</span></div><div class="line"></div><div class="line"><span class="keyword">export</span> &#123; firstName, lastName, year&#125;</div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> * <span class="keyword">as</span> Lls <span class="keyword">from</span> <span class="string">'./lls'</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(Lls.firstName,Lls.lastName, Lls.year)</div></pre></td></tr></table></figure>
 <h3 id="export-default整体输出"><a href="#export-default整体输出" class="headerlink" title="export default整体输出"></a>export default整体输出</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'My name is nico'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* index.js */</span></div><div class="line"><span class="keyword">import</span> sayName <span class="keyword">from</span> <span class="string">'./lls'</span></div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(sayName())</div></pre></td></tr></table></figure>
@@ -374,6 +374,12 @@
 
     <footer class="post-footer">
       
+        <div class="post-tags">
+          
+            <a href="/tags/ecmascript-6/" rel="tag"># ecmascript 6</a>
+          
+        </div>
+      
 
       
         <div class="post-nav">
@@ -388,6 +394,10 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/01/06/ES6 使用教程/" rel="prev" title="ES6 使用教程">
+                ES6 使用教程 <i class="fa fa-chevron-right"></i>
+              </a>
             
           </div>
         </div>
@@ -436,10 +446,10 @@
       
         <ul class="sidebar-nav motion-element">
           <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            Table of Contents
+            Inhaltsverzeichnis
           </li>
           <li class="sidebar-nav-overview" data-target="site-overview">
-            Overview
+            Übersicht
           </li>
         </ul>
       
@@ -455,8 +465,8 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
-              <span class="site-state-item-name">posts</span>
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
 
@@ -465,8 +475,8 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -530,7 +540,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

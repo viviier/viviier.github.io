@@ -183,7 +183,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
             
-            Home
+            Startseite
           </a>
         </li>
       
@@ -193,7 +193,7 @@
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
-            Archives
+            Archiv
           </a>
         </li>
       
@@ -226,6 +226,284 @@
           <div id="content" class="content">
             
   <section id="posts" class="posts-expand">
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/06/Javascript 闭包/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/06/Javascript 闭包/" itemprop="url">
+                  Javascript 闭包
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-06T22:34:17+08:00">
+                2016-12-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <ul>
+<li>变量的作用域<br><br></li>
+</ul>
+<p><em>作用域分为全局作用域和局部作用域</em><br><em>函数内部可以读取外部的全局变量</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> test = <span class="string">'hello'</span>;</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(test);</div><div class="line">&#125;</div><div class="line">hello();  <span class="comment">// test</span></div></pre></td></tr></table></figure></p>
+<p><br><br><em>反之，函数外部不能读取函数内部变量</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> test = <span class="string">'nico'</span>;</div><div class="line">&#125;</div><div class="line"><span class="built_in">console</span>.log(test);  <span class="comment">// undefined</span></div></pre></td></tr></table></figure></p>
+<p><br><br><em>注意，在函数内部声明变量要使用var，不然会当作在函数内部声明了一个全局变量</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">hello</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    test = <span class="string">'nico'</span>;</div><div class="line">&#125;</div><div class="line">hello();</div><div class="line"><span class="built_in">console</span>.log(test);  <span class="comment">// nico</span></div></pre></td></tr></table></figure></p>
+<p><br><br><em>一个简单的闭包</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> test = <span class="string">'nico'</span>;</div><div class="line">  <span class="comment">/* 由于js的作用域特性，外部变量无法读取到函数内部变量，但是我们想要获取这个值的时候，该用什么方法呢？ */</span></div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="comment">/* 那么我们就利用js作用域的另一个特性，函数内部可以读取外部的变量来获取这个值 */</span></div><div class="line">    <span class="built_in">console</span>.log(test);</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="comment">/* 然后在外部作用域中将内部的方法返回 */</span></div><div class="line">  <span class="keyword">return</span> f2; <span class="comment">// 注意这里不要加括号，加了括号就代表立即执行方法了</span></div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> result = f1();  <span class="comment">// 这里f1() 返回了 f2</span></div><div class="line">result();  <span class="comment">// 这里的result() 就等于 f2()</span></div><div class="line"></div><div class="line"><span class="comment">/* 这就是一个闭包  */</span></div></pre></td></tr></table></figure></p>
+<p><br><br><em>对于闭包的概念</em></p>
+<ol><br>    <li>闭包就是能够读取其他函数内部变量的函数</li><br>    <li>只有函数内部的子函数才能读取其局部变量，因此闭包是一个定义在函数内部的函数</li><br>    <li>闭包是函数内部和函数外部连接的桥梁</li><br></ol>
+
+<p><br></p>
+<ul>
+<li>闭包的用途</li>
+</ul>
+<p><br><br> <em>除了上面例子的读取函数内部的变量外，它还可以让变量的值始终保存在内存中</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">f1</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> n = <span class="number">999</span>;</div><div class="line">    addNum = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;n+=<span class="number">1</span>&#125;</div><div class="line">    <span class="function"><span class="keyword">function</span> <span class="title">f2</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(n);</div><div class="line">   &#125;</div><div class="line">    <span class="keyword">return</span> f2;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> result = f1();  <span class="comment">// f2被赋值给了全局变量，f2存在于内存中</span></div><div class="line">result();  <span class="comment">// 999</span></div><div class="line">addNum();</div><div class="line">result();  <span class="comment">// 1000</span></div></pre></td></tr></table></figure></p>
+<p><br><br><em>f1是f2父元素，f2被复制给了全局变量result，这个时候f2就存在于内存中了，而f2依赖f1，所以f1也在内存中，不会在调用后被垃圾回收机制回收</em><br><br></p>
+<ul>
+<li><p>使用闭包需要注意</p>
+  <ol><br>      <li>闭包会使得函数中的变量都被保存在内存中，内存消耗变大，滥用闭包会造成页面性能问题，在ie中还会导致内存泄漏。解决方法是，在退出函数之前，将不使用局部变量全部删除。</li><br>      <li>闭包会在父元素外部改变父元素内部变量的值。如果把父元素当作对象使用，把闭包当作它的公有方法，把函数内部的变量当作私有属性，不要随便改变父元素内部变量的值。拿上面的栗子来说，f1内部变量num就是f1的私有变量，f2就是f1的公用方法</li><br>  </ol>
+
+</li>
+</ul>
+<p><br></p>
+<p><hr></p>
+<h5 id="developer-mozilla"><a href="#developer-mozilla" class="headerlink" title="developer.mozilla"></a>developer.mozilla</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addNum</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">y</span>) </span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(x);  <span class="comment">// 5</span></div><div class="line">    <span class="keyword">return</span> x + y;</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> add5 = addNum(<span class="number">5</span>);   <span class="comment">// 这里被提升了</span></div><div class="line"><span class="built_in">console</span>.log(add5)  <span class="comment">// function(y) &#123;return x+y;&#125;</span></div><div class="line"><span class="comment">/*</span></div><div class="line">  function addNum(5) = add5; </div><div class="line">  return function(y)&#123;return x+ y;&#125; = add5;</div><div class="line"></div><div class="line">  在add5 环境中，x=5, 返回了 function(y) &#123;return x+ y ;&#125;</div><div class="line"></div><div class="line">  add5 = function addNum(5)的 function(y) &#123;return x+ y ;&#125;</div><div class="line">  */</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(add5(<span class="number">2</span>));</div><div class="line"></div><div class="line"><span class="comment">/* soga </span></div><div class="line">   上面的例子，阅读方式是</div><div class="line">   首先，var add5 = addNum(5) 赋值后被提升，所以下面的console.log(add5) == function(y) &#123;return x+y;&#125;</div><div class="line">   然后addNum(x)， 因为被var add5= addNum(5) 调用过，所以这里的x == 5</div><div class="line">   最后在下面调用add5(2)  ，因为这个时候add5 == function(y)&#123;return x+y;&#125; 所以这里返回了5 + 2 </div><div class="line">   */</div></pre></td></tr></table></figure>
+<p><br><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">makeSizer</span>(<span class="params">size</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">        <span class="built_in">document</span>.body.style.fontSize = size + <span class="string">'px'</span>;</div><div class="line">   &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> size12 = makeSizer(<span class="number">12</span>);</div><div class="line"><span class="keyword">var</span> size14 = makeSizer(<span class="number">14</span>);</div><div class="line"><span class="keyword">var</span> size16 = makeSizer(<span class="number">16</span>);</div><div class="line"></div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'fontSize12'</span>).onclick = size12;</div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'fontSize14'</span>).onclick = size14;</div><div class="line"><span class="built_in">document</span>.getElementById(<span class="string">'fontSize16'</span>).onclick = size16;</div></pre></td></tr></table></figure></p>
+<p><br><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> Counter = (<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> privateCounter = <span class="number">0</span>;</div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">changeBy</span>(<span class="params">val</span>) </span>&#123;</div><div class="line">    privateCounter += val;</div><div class="line">  &#125;</div><div class="line"></div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">   <span class="attr">increment</span>:  <span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123;</div><div class="line">    changeBy(<span class="number">1</span>)</div><div class="line">   &#125;,</div><div class="line">   <span class="attr">decrement</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    changeBy(<span class="number">-1</span>)</div><div class="line">   &#125;,</div><div class="line">   <span class="attr">value</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">     <span class="keyword">return</span> privateCounter;</div><div class="line">   &#125;</div><div class="line">  &#125;</div><div class="line">&#125;)();</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(Counter.value());</div><div class="line">Counter.increment();</div><div class="line"><span class="built_in">console</span>.log(Counter.value());</div><div class="line"></div><div class="line"><span class="comment">/* 这里只有一个环境，这个闭包环境被三个函数所共享 */</span></div></pre></td></tr></table></figure></p>
+<p><br></p>
+<h5 id="liaoxuefeng"><a href="#liaoxuefeng" class="headerlink" title="liaoxuefeng"></a>liaoxuefeng</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addArr</span>(<span class="params">arr</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">x,y</span>)</span>&#123;</div><div class="line">      <span class="keyword">return</span> x+y;</div><div class="line">    &#125;)</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> sum;</div><div class="line">&#125;</div><div class="line"></div><div class="line">f1 = addArr([<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>]);  <span class="comment">// f1 = function sum()... 但是这个时候arr已经被赋值</span></div><div class="line"><span class="built_in">console</span>.log(f1())</div></pre></td></tr></table></figure>
+<ul>
+<li><p>不想直接返回结果的话，就返回方法，然后再调用</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> sum = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> arr.reduce(<span class="function"><span class="keyword">function</span>(<span class="params">x, y</span>)</span>&#123;</div><div class="line">        <span class="keyword">return</span> x+ y;</div><div class="line">   &#125;)</div><div class="line">&#125;</div><div class="line"><span class="keyword">return</span> sum;</div></pre></td></tr></table></figure>
+</li>
+<li><p>立即执行函数</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">(<span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> x*x;</div><div class="line">&#125;)(<span class="number">3</span>);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><br><br><em>计算器例子</em><br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createCounter</span>(<span class="params">initial</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> sum = initial || <span class="number">0</span>;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">inc</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">    sum+=<span class="number">1</span>;</div><div class="line">    <span class="keyword">return</span> sum;</div><div class="line">  &#125;</div><div class="line">         &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> counter1 = createCounter();</div><div class="line"><span class="built_in">console</span>.log(counter1.inc());</div><div class="line"><span class="keyword">var</span> counter2 = createCounter(<span class="number">10</span>);</div><div class="line"><span class="built_in">console</span>.log(counter2.inc())</div></pre></td></tr></table></figure></p>
+<blockquote>
+<p>在函数内返回方法</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">inc</span>: functon() &#123;...&#125;,</div><div class="line">    <span class="attr">ino</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;...&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><br><br><em>简单的小实例</em></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">pow</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="function"><span class="keyword">function</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="built_in">Math</span>.pow(x, n);</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> result = pow(<span class="number">2</span>);</div><div class="line"><span class="built_in">console</span>.log(result(<span class="number">5</span>));</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/05/Javascript 对象模式/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/05/Javascript 对象模式/" itemprop="url">
+                  Javascript 对象模式
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T22:26:18+08:00">
+                2016-12-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h4 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">	o.name = name;</div><div class="line">	o.age = age;</div><div class="line">	o.job = job;</div><div class="line">	o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> o;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = newCreatePerson(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div></pre></td></tr></table></figure>
+<h4 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = name;</div><div class="line">	<span class="keyword">this</span>.age = age;</div><div class="line">	<span class="keyword">this</span>.job= job;</div><div class="line">	<span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();		<span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*	</span></div><div class="line"> * 没有显示地创建对象</div><div class="line"> *	直接将属性和方法复制给了this对象</div><div class="line"> * 将构造函数的作用域赋值给了新对象（因此this就指向了这个新对象）</div><div class="line"> *	没有return语句</div><div class="line"> */</div></pre></td></tr></table></figure>
+<h4 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">	<span class="keyword">constructor</span> = Person;</div><div class="line">	name: 'nico',</div><div class="line">	age: 14,</div><div class="line">	job: 'dog',</div><div class="line">	skills: ['javascript', 'php', 'vue'],</div><div class="line">	sayName: function() &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 实例会共享对象</div><div class="line"> */</div></pre></td></tr></table></figure>
+<h4 id="组合使用构造函数模式和原型模式"><a href="#组合使用构造函数模式和原型模式" class="headerlink" title="组合使用构造函数模式和原型模式"></a>组合使用构造函数模式和原型模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = name;</div><div class="line">	<span class="keyword">this</span>.age = age;</div><div class="line">	<span class="keyword">this</span>.job = job;</div><div class="line">	<span class="keyword">this</span>,skills = [<span class="string">'javascript'</span>, <span class="string">'php'</span>, <span class="string">'vue'</span>]</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">	<span class="attr">constructor</span>: Person,</div><div class="line">	<span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 使用构造函数模式定义实例属性</div><div class="line"> * 使用原型模式定义方法和共享的属性</div><div class="line"> * 这样每个实例都会有一份自己的实例属性副本同时共享着方法的引用</div><div class="line"> */</div></pre></td></tr></table></figure>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
     
       
 
@@ -275,7 +553,7 @@
               <span class="post-meta-item-icon">
                 <i class="fa fa-calendar-o"></i>
               </span>
-              <span class="post-meta-item-text">Posted on</span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
               <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-04T11:44:25+08:00">
                 2016-12-04
               </time>
@@ -397,8 +675,8 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">11</span>
-              <span class="site-state-item-name">posts</span>
+              <span class="site-state-item-count">13</span>
+              <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
 
@@ -407,8 +685,8 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">4</span>
-                <span class="site-state-item-name">tags</span>
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Tags</span>
               </a>
             </div>
           
@@ -456,7 +734,7 @@
 
 
 <div class="powered-by">
-  Powered by <a class="theme-link" href="https://hexo.io">Hexo</a>
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
 </div>
 
 <div class="theme-info">

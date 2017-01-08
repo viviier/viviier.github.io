@@ -1,0 +1,664 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="ecmascript 6," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
+12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
+而同步的IO操作则需要">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ECMAScript6 generator co async">
+<meta property="og:url" content="http://yoursite.com/2017/01/08/ECMAScript6 generator co async/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
+12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
+而同步的IO操作则需要">
+<meta property="og:updated_time" content="2017-01-08T15:47:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ECMAScript6 generator co async">
+<meta name="twitter:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
+12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
+而同步的IO操作则需要">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/08/ECMAScript6 generator co async/"/>
+
+
+
+
+
+  <title> ECMAScript6 generator co async | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/08/ECMAScript6 generator co async/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                ECMAScript6 generator co async
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-08T23:46:47+08:00">
+                2017-01-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="关于异步"><a href="#关于异步" class="headerlink" title="关于异步"></a>关于异步</h3><p>在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$.getJSON(<span class="string">'http://example/ajax'</span>, <span class="function"><span class="keyword">function</span>(<span class="params">err, data</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(err) <span class="keyword">throw</span> err</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'等待结果返回'</span>)</div><div class="line">&#125;)</div><div class="line"><span class="built_in">console</span>.log(<span class="string">'不等待结果返回执行'</span>)</div></pre></td></tr></table></figure>
+<p>而同步的IO操作则需要等待结果完成后才能继续执行后面的代码。在等待时间内，无法响应其他任何事件。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> data = getJSONSync(<span class="string">'http://example.com/ajax'</span>);</div></pre></td></tr></table></figure>
+<p>通过回调函数异步读取文件的简单例子：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">fs.readFile(<span class="string">'nico.txt'</span>, (err, data) =&gt; &#123;</div><div class="line">  <span class="keyword">if</span>(err) <span class="keyword">throw</span> err</div><div class="line">  <span class="built_in">console</span>.log(data)</div><div class="line">&#125;)</div></pre></td></tr></table></figure></p>
+<h3 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h3><blockquote>
+<p>将回调函数的横向加载改为纵向加载，解决回调函数多层嵌套问题。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">fs.readFile(fileA, (err, data) =&gt; &#123;</div><div class="line">  fs.readFile(fileB, (err, data) =&gt; &#123;</div><div class="line">    <span class="comment">// ...</span></div><div class="line">  &#125;)</div><div class="line">&#125;)</div></pre></td></tr></table></figure>
+<p>如果依次读取多个文件，就会出现多重嵌套，代码就会无法管理。采用Promise，连续读取多个文件，就可以解决回调函数带来的问题。<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> readFile = <span class="built_in">require</span>(<span class="string">'fs-redfile-promise'</span>)</div><div class="line"></div><div class="line">readFile(fileA)</div><div class="line">  .then(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data.toString()))</div><div class="line">  .then(<span class="function"><span class="params">()</span> =&gt;</span> readFile(fileB))</div><div class="line">  .then(<span class="function"><span class="params">data</span> =&gt;</span> <span class="built_in">console</span>.log(data.toString))</div><div class="line">  .catch(<span class="function"><span class="params">err</span> =&gt;</span> <span class="built_in">console</span>.log(err))</div></pre></td></tr></table></figure></p>
+<p>Promise提供then方法加载回调函数，catch捕获错误。但是Promis只是回调函数的改进，代码含有有大量的then，语义不清晰，而且代码冗余。那么，有没有更好的解决方法呢？</p>
+<h3 id="Generator"><a href="#Generator" class="headerlink" title="Generator"></a>Generator</h3><h4 id="关于Generator"><a href="#关于Generator" class="headerlink" title="关于Generator"></a>关于Generator</h4><blockquote>
+<p>交出函数的执行权（暂停执行）。</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> y = <span class="keyword">yield</span> x + <span class="number">2</span>;</div><div class="line">  <span class="keyword">return</span> y;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>以上代码就是一个Generator函数。整个generator函数就是一个封装的异步函数，异步操作需要暂停的地方，都用yield语句注明。Generator函数的执行方法如下。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> g = gen(<span class="number">1</span>);</div><div class="line">g.next();  <span class="comment">// &#123; value: 3, done: false &#125;</span></div><div class="line">g.next();  <span class="comment">// &#123; value: undefined, done: true &#125;</span></div></pre></td></tr></table></figure>
+<p>执行generator函数返回的是指针对象。调用指针的next方法，会移动内部指针，指向第一个遇到的yield语句上，上例是执行到 x + 2 为止。</p>
+<h4 id="generator传值与错误处理"><a href="#generator传值与错误处理" class="headerlink" title="generator传值与错误处理"></a>generator传值与错误处理</h4><p>next方法返回值的value属性，是generator函数向外输出数据。next方法还可以接受参数，向generator函数体内输入数据。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">var</span> y = <span class="keyword">yield</span> x + <span class="number">2</span>;</div><div class="line">  <span class="keyword">return</span> y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> g = gen(<span class="number">1</span>);</div><div class="line">g.next();  <span class="comment">// &#123; value: 3, done: false &#125;</span></div><div class="line">g.next(<span class="number">2</span>);  <span class="comment">// &#123; value: 2, done: true &#125;</span></div></pre></td></tr></table></figure>
+<p>上面代码中，第一个next方法的value属性，返回表达式 x + 2的值。第二个next方法带有参数2，作为上个阶段异步任务的返回值，被函数体变量个y接收。因此这一步的value属性，返回的就是2。</p>
+<p>Generator函数内部还可以处理错误代码，捕获函数体外抛出的错误。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params">x</span>) </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">     <span class="keyword">var</span> y = <span class="keyword">yield</span> x + <span class="number">2</span>;</div><div class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</div><div class="line">     <span class="built_in">console</span>.log(e);</div><div class="line">  &#125;</div><div class="line">    <span class="keyword">return</span> y;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> g = gen(<span class="number">1</span>);</div><div class="line">g.next();</div><div class="line">g.throw(<span class="string">'出错了'</span>);  <span class="comment">// 出错了</span></div></pre></td></tr></table></figure>
+<p>generator函数体外，throw抛出的错误可以被函数体内的try …catch捕获。也就是出错的代码和处理错误的代码，实现了时间和空间的分离。</p>
+<h4 id="Generator实例"><a href="#Generator实例" class="headerlink" title="Generator实例"></a>Generator实例</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> fetch = <span class="built_in">require</span>(<span class="string">'node-fetch'</span>);</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span>* <span class="title">gen</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> url = <span class="string">'http://api.github.com/github'</span>;</div><div class="line">  <span class="keyword">let</span> result = <span class="keyword">yield</span> fetch(url);</div><div class="line">  <span class="built_in">console</span>.log(result.bio);</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">let</span> g = gen();</div><div class="line"><span class="keyword">let</span> result = g.next();</div><div class="line"></div><div class="line">result.value</div><div class="line">  .then( <span class="function"><span class="params">data</span> =&gt;</span> data.json() )</div><div class="line">  .then( <span class="function"><span class="params">data</span> =&gt;</span> g.next(data) );</div></pre></td></tr></table></figure>
+<p>上面代码中，首先执行generator获取指针对象，然后使用next方法执行异步的第一阶段，得到了没有jsonparse的result，因为fetch返回的是promise对象，所有使用then调用下一个next方法。先将得到的result给JSON.parse()，然后把parse后的值作为上个阶段异步任务返回的值传到函数体内（此时函数体内的result成了第二个then传入进的data值，也就是parse后的result），然后执行<code>console.log(result.bio);</code></p>
+<h4 id="基于promise对象的自动执行"><a href="#基于promise对象的自动执行" class="headerlink" title="基于promise对象的自动执行"></a>基于promise对象的自动执行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">var</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"></div><div class="line"><span class="keyword">var</span> readFile = <span class="function"><span class="keyword">function</span>(<span class="params">fileName</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function"><span class="keyword">function</span>(<span class="params">resolve, reject</span>)</span>&#123;</div><div class="line">        fs.readFile(fileName, <span class="function"><span class="keyword">function</span>(<span class="params">err, data</span>)</span>&#123;</div><div class="line">            <span class="keyword">if</span>(err) reject(err)</div><div class="line">                resolve(data)</div><div class="line">        &#125;)</div><div class="line">    &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>) </span>&#123;</div><div class="line">    <span class="keyword">var</span> f1 = <span class="keyword">yield</span> readFile(<span class="string">'./nihao.txt'</span>)</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'我被执行了吗？'</span>)</div><div class="line">    <span class="keyword">var</span> f2 = <span class="keyword">yield</span> readFile(<span class="string">'./package.json'</span>)</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'我被输出了吗/'</span>)</div><div class="line">    <span class="built_in">console</span>.log(f1.toString())</div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'我是粉丝'</span>)</div><div class="line">    <span class="built_in">console</span>.log(f2.toString())</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> g = gen()</div><div class="line"></div><div class="line">g.next().value.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>) </span>&#123;  </div><div class="line">    <span class="comment">// g.next()  // &#123; value: 'hini', done: false&#125;</span></div><div class="line">    <span class="built_in">console</span>.log(<span class="string">'woshi'</span> + data)</div><div class="line">    <span class="comment">// g.next(data)  // &#123; value: 'package.json' , done: false&#125;</span></div><div class="line">    g.next(data).value.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'我是什么时候执行的啊'</span> + data)</div><div class="line">        <span class="comment">// g.next(data)  // &#123; value: undefined, done: true&#125;</span></div><div class="line">        g.next(data)</div><div class="line">        <span class="built_in">console</span>.log(<span class="string">'我呢?'</span>)</div><div class="line">    &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="comment">// 'woshihini'</span></div><div class="line"><span class="comment">// </span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> *  g.next()的时候，返回了&#123; value: 'hini', done: false&#125;</div><div class="line">    .value也就是'hini'因为是promise对象，所以用then方法，将hini作为data传入</div><div class="line">    console.log('woshi' data)  // woshihini</div><div class="line">    然后再次执行g.next(data)</div><div class="line">    f1 = 'nihi'</div><div class="line">    console.log('我被执行了吗？')</div><div class="line">    console.log('我是什么时候执行的啊' + data)</div><div class="line">    返回了&#123; value: 'package.json', done: false&#125;</div><div class="line">    再次执行g.next(data)</div><div class="line">    f2 = 'package.json'</div><div class="line">    console.log('我被输出了吗？')</div><div class="line">    console.log(f1.toString)</div><div class="line">    console.log('我是粉丝')</div><div class="line">    console.log(f2.toString)</div><div class="line">    然后返回&#123; value: undefined, done: true&#125;</div><div class="line">    console.log('我呢')</div><div class="line"></div><div class="line">    tips: next参数会被当作上一个yield语句的返回值。</div><div class="line">    执行第一个g.next() 返回值是&#123; value: 'hini', done: false&#125;</div><div class="line">    然后因为是promise对象，所以使用then方法，将.value最为data参数</div><div class="line">    然后再次执行g.next(data) 这个时候data为'hini' 把这个data最为上一个yield语句的返回值，然后执行下面的语句</div><div class="line">    也就是  f1 = data 然后next到下一个yield</div><div class="line">    然后获取到下一个yield的值也就是'package.json'，作为promise对象的data传入，</div><div class="line">    执行g.next(data)的时候，执行的时候将data作为上一个yield的返回值，也就是执行</div><div class="line">    var f2 = 'package.json'</div><div class="line">    然后执行下面的console.log</div><div class="line"> */</div></pre></td></tr></table></figure>
+<p>上面代码是通过then方法层层添加回调，手动执行。相对这点，就可以写出一个自动执行器函数<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">run</span>(<span class="params">gen</span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> g = gen();</div><div class="line"></div><div class="line">  <span class="function"><span class="keyword">function</span> <span class="title">next</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">    <span class="keyword">var</span> result = g.next(data); </div><div class="line"></div><div class="line">    <span class="keyword">if</span> (result.done) <span class="keyword">return</span> result.value;</div><div class="line">        result.value.then(<span class="function"><span class="keyword">function</span>(<span class="params">data</span>)</span>&#123;</div><div class="line">        next(data);</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    next();</div><div class="line">&#125;</div><div class="line"></div><div class="line">run(gen);</div><div class="line"></div><div class="line"><span class="comment">// 第一步g.next(data)  返回&#123; value: 'hini', done: false&#125; 指针指到var f1 = yiedl</span></div><div class="line"><span class="comment">// 第二步next(data)  g.next(data) 把data也就是result.value: 'hini'当作上一个阶段的返回值，然后执行下面的语句</span></div><div class="line"><span class="comment">// var f1 = 'hini'  然后执行到下一个yield 返回 &#123; value: 'package.json', done: false&#125;</span></div><div class="line"><span class="comment">// 第三步next(data)  g.next(data) 把data也就是result.value: 'package.json'当作上一个阶段的返回值，然后执行下面的语句</span></div><div class="line"><span class="comment">// var f2= 'package.json'  console.log(...)  console.log(...)</span></div><div class="line"><span class="comment">// 但是这个时候done还是false，所以继续g.next()一次，返回 undefined</span></div></pre></td></tr></table></figure></p>
+<p>上面代码中，只要generator函数没有执行到最后一步，next函数就调用自身，实现自动执行。</p>
+<h3 id="Co"><a href="#Co" class="headerlink" title="Co"></a>Co</h3><blockquote>
+<p>使用co的前提条件是，generator函数的yield命令后面，只能是thunk函数或promise对象。</p>
+</blockquote>
+<h4 id="关于co"><a href="#关于co" class="headerlink" title="关于co"></a>关于co</h4><p>co是上面自动执行函数的扩展，接收generator函数作为参数，返回一个promise对象，然后通过co自身的next反复调用。</p>
+<h4 id="基于co的自动执行"><a href="#基于co的自动执行" class="headerlink" title="基于co的自动执行"></a>基于co的自动执行</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> fs = <span class="built_in">require</span>(<span class="string">'fs'</span>)</div><div class="line"><span class="keyword">const</span> co = <span class="built_in">require</span>(<span class="string">'co'</span>)</div><div class="line"></div><div class="line"><span class="keyword">const</span> readFile = <span class="function"><span class="params">fileName</span> =&gt;</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve, reject</span>) =&gt;</span> &#123;</div><div class="line">  fs.readFile(fileName, (err, data) =&gt; &#123;</div><div class="line">    <span class="keyword">if</span>(err) reject(err)</div><div class="line">    resolve(data)</div><div class="line">  &#125;)</div><div class="line">&#125;)</div><div class="line"></div><div class="line"><span class="keyword">const</span> gen = <span class="function"><span class="keyword">function</span>* (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">let</span> f1 = <span class="keyword">yield</span> readFile(<span class="string">'./nihao.txt'</span>)</div><div class="line">  <span class="keyword">let</span> f2 = <span class="keyword">yield</span> readFile(<span class="string">'package.json'</span>)</div><div class="line">  <span class="built_in">console</span>.log(f1.toString())</div><div class="line">  <span class="built_in">console</span>.log(f2.toString())</div><div class="line">&#125;</div><div class="line"></div><div class="line">co(gen)</div></pre></td></tr></table></figure>
+<h4 id="并发的异步操作"><a href="#并发的异步操作" class="headerlink" title="并发的异步操作"></a>并发的异步操作</h4><p>co支持并发的异步操作，即允许某些操作同时进行，等到它们全部完成，才进行下一步。这时，要把并发的操作都放在数组或对象里面。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 数组的写法</span></div><div class="line">co(<span class="function"><span class="keyword">function</span>* (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> res = <span class="keyword">yield</span> [</div><div class="line">    <span class="built_in">Promise</span>.resolve(<span class="number">1</span>),</div><div class="line">    <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</div><div class="line">  ]</div><div class="line">  <span class="built_in">console</span>.log(res)</div><div class="line">&#125;).catch(onerror)</div><div class="line"></div><div class="line"><span class="comment">// 对象的写法</span></div><div class="line">co(<span class="function"><span class="keyword">function</span>* (<span class="params"></span>)</span>&#123;</div><div class="line">  <span class="keyword">var</span> res = <span class="keyword">yield</span> &#123;</div><div class="line">    <span class="number">1</span>: <span class="built_in">Promise</span>.resolve(<span class="number">1</span>),</div><div class="line">    <span class="number">2</span>: <span class="built_in">Promise</span>.resolve(<span class="number">2</span>)</div><div class="line">  &#125;</div><div class="line">  <span class="built_in">console</span>.log(res)</div><div class="line">&#125;).catch(onerror)</div></pre></td></tr></table></figure>
+<h3 id="Async"><a href="#Async" class="headerlink" title="Async"></a>Async</h3><blockquote>
+<p>async函数就是generator函数的语法糖。</p>
+</blockquote>
+<h4 id="关于async"><a href="#关于async" class="headerlink" title="关于async"></a>关于async</h4><figure class="highlight"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">const asyncReadFile = async function ()&#123;</div><div class="line">  let f1 = await readFile('nihao.txt')</div><div class="line">  let f2 = await readFile('package.json)</div><div class="line">  console.log(f1.toString())</div><div class="line">  console.log(f2.toString())</div><div class="line">&#125;</div><div class="line"></div><div class="line">asyncReadFile()</div></pre></td></tr></table></figure>
+<p>把之前的readFile写成async函数就是这样。比较之后发现，async函数就是将generator函数的星号（＊）替换成async，将yield替换成了await。generator函数的执行必须靠执行器，才有了co函数库，而async函数自带执行器，与普通函数一摸一样，而且async的语义更好，适用性更广，在async函数的await命令后面，可以跟Promise对象和原始类型的值。</p>
+<h4 id="async例子"><a href="#async例子" class="headerlink" title="async例子"></a>async例子</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">timeout</span>(<span class="params">ms</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> <span class="keyword">new</span> <span class="built_in">Promise</span>(<span class="function">(<span class="params">resolve</span>) =&gt;</span> &#123;</div><div class="line">    setTimeout(resolve, ms)</div><div class="line">  &#125;)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">asyncprint</span>(<span class="params">value, ms</span>) </span>&#123;</div><div class="line">  <span class="keyword">await</span> timeout(ms)</div><div class="line">  <span class="built_in">console</span>.log(value)</div><div class="line">&#125;</div><div class="line"></div><div class="line">asyncprint(<span class="string">'hello'</span>, <span class="number">5000</span>)</div></pre></td></tr></table></figure>
+<p>上面的代码指定5s后，输出’hello’。</p>
+<p>同generator函数一样，async函数返回一个promise对象，可以使用then方法添加回调函数。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getStockPriceByName(<span class="string">'goog'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">result</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
+<p>另外要注意的是，await命令后面的promise对象，运行结果可能是rejected，所以最好把await命令放在try…catch代码块中。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="keyword">await</span> sonethingPromise()</div><div class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</div><div class="line">    <span class="built_in">console</span>.log(err)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 另一种写法</span></div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">await</span> sonethingPromise().catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(err)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果希望多个请求并发执行，可以使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="external">Promise.all</a>方法</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/ecmascript-6/" rel="tag"># ecmascript 6</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/06/ECMAScript6 import extends/" rel="next" title="ECMAScript6 import extends">
+                <i class="fa fa-chevron-left"></i> ECMAScript6 import extends
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ant" />
+          <p class="site-author-name" itemprop="name">ant</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">14</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#关于异步"><span class="nav-number">1.</span> <span class="nav-text">关于异步</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Promise"><span class="nav-number">2.</span> <span class="nav-text">Promise</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Generator"><span class="nav-number">3.</span> <span class="nav-text">Generator</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于Generator"><span class="nav-number">3.1.</span> <span class="nav-text">关于Generator</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#generator传值与错误处理"><span class="nav-number">3.2.</span> <span class="nav-text">generator传值与错误处理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Generator实例"><span class="nav-number">3.3.</span> <span class="nav-text">Generator实例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于promise对象的自动执行"><span class="nav-number">3.4.</span> <span class="nav-text">基于promise对象的自动执行</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Co"><span class="nav-number">4.</span> <span class="nav-text">Co</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于co"><span class="nav-number">4.1.</span> <span class="nav-text">关于co</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#基于co的自动执行"><span class="nav-number">4.2.</span> <span class="nav-text">基于co的自动执行</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#并发的异步操作"><span class="nav-number">4.3.</span> <span class="nav-text">并发的异步操作</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Async"><span class="nav-number">5.</span> <span class="nav-text">Async</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于async"><span class="nav-number">5.1.</span> <span class="nav-text">关于async</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#async例子"><span class="nav-number">5.2.</span> <span class="nav-text">async例子</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ant</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

@@ -1,0 +1,634 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="算法," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="二分查找
+对有序的数据进行二分查找比顺序查找更高效。
+
+例子简单例子我们有1-100个数据：1 25 50 75 82 100想要在其中找到数字82，进行二分查找51 75 82 100第一次mid”索引”为(0 + 100) / 2 = 50(Math.floor)，返回太小，因此下限变为mid + 1 = 51，上限不变75 82 88 100第二次mid”索引”为(51 + 100) / 2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="算法 - 二分查找 斐波那契">
+<meta property="og:url" content="http://yoursite.com/2017/01/21/算法 - 二分查找 斐波那契/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="二分查找
+对有序的数据进行二分查找比顺序查找更高效。
+
+例子简单例子我们有1-100个数据：1 25 50 75 82 100想要在其中找到数字82，进行二分查找51 75 82 100第一次mid”索引”为(0 + 100) / 2 = 50(Math.floor)，返回太小，因此下限变为mid + 1 = 51，上限不变75 82 88 100第二次mid”索引”为(51 + 100) / 2">
+<meta property="og:updated_time" content="2017-01-21T15:22:21.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="算法 - 二分查找 斐波那契">
+<meta name="twitter:description" content="二分查找
+对有序的数据进行二分查找比顺序查找更高效。
+
+例子简单例子我们有1-100个数据：1 25 50 75 82 100想要在其中找到数字82，进行二分查找51 75 82 100第一次mid”索引”为(0 + 100) / 2 = 50(Math.floor)，返回太小，因此下限变为mid + 1 = 51，上限不变75 82 88 100第二次mid”索引”为(51 + 100) / 2">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/01/21/算法 - 二分查找 斐波那契/"/>
+
+
+
+
+
+  <title> 算法 - 二分查找 斐波那契 | Hexo </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">Hexo</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            Tags
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/01/21/算法 - 二分查找 斐波那契/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                算法 - 二分查找 斐波那契
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-01-21T23:21:55+08:00">
+                2017-01-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="二分查找"><a href="#二分查找" class="headerlink" title="二分查找"></a>二分查找</h3><blockquote>
+<p>对有序的数据进行二分查找比顺序查找更高效。</p>
+</blockquote>
+<h4 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h4><h5 id="简单例子"><a href="#简单例子" class="headerlink" title="简单例子"></a>简单例子</h5><p>我们有1-100个数据：<br><code>1 25 50 75 82 100</code><br>想要在其中找到数字82，进行二分查找<br><code>51 75 82 100</code><br>第一次mid”索引”为(0 + 100) / 2 = 50(Math.floor)，返回太小，因此下限变为mid + 1 = 51，上限不变<br><code>75 82 88 100</code><br>第二次mid”索引”为(51 + 100) / 2 = 75(Math.floor)，返回太小，因此下限变为mid + 1 = 76，上限不变<br><code>76 82 88 100</code><br>第三次mid”索引”为(76 + 100) / 2 = 88(Math.floor)，返回太大，因此下限不变，上限变为mid - 1 = 87<br><code>76 81 82 87</code><br>第四次mid”索引”为(76 + 87) / 2 = 81(Math.floor)，返回太小，因此下限变为mid + 1 = 82，上限不变<br><code>82 84 87</code><br>第五次mid”索引”为(82 + 87) / 2 = 84(Math.floor)，返回太大，因此下限不变，上限变为mid - 1 = 83<br><code>82 83</code><br>第六次mid”索引”为(82 + 83) / 2 = 82(Math.floor)，返回mid”索引”</p>
+<p><b>二分查找的简单描述：</b><br>将数组的第一个位置设置为下边界（0）<br>将数组的最后一个元素所在的位置设置为上边界（arr.length - 1）<br>当下边界小于等于上边，进入while循环：<br>a. 将mid设置为（下边界 + 上边界）/ 2<br>b. 如果arr[mid]的元素小于查询的值，则下边界变为mid + 1<br>c. 如果arr[mid]的元素大于查询的值，则上边界变为mid - 1<br>d. 否则mid等于查询的值，返回mid<br>如果没有找到，退出循环，返回-1</p>
+<h5 id="实现"><a href="#实现" class="headerlink" title="实现"></a>实现</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @二分查找</div><div class="line"> * @arr, data 传入参数</div><div class="line"> * @lowerBound, upperBound, mid 定义数组左边取值范围，定义数组右边取值范围，相加为总范围，mid为总范围除2取中间值</div><div class="line"> * @循环判断中间值arr[i]小于 大于 等于data，做出相应的返回</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">binSearch</span>(<span class="params">arr, data</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> lowerBound = <span class="number">0</span></div><div class="line">  <span class="keyword">let</span> upperBound = arr.length - <span class="number">1</span></div><div class="line">  </div><div class="line">  <span class="keyword">while</span>(lowerBound &lt;= upperBound) &#123;</div><div class="line">    <span class="keyword">let</span> mid = <span class="built_in">Math</span>.floor((lowerBound + upperBound) / <span class="number">2</span>)</div><div class="line">    <span class="keyword">if</span>(arr[mid] &lt; data) &#123;</div><div class="line">      lowerBound = mid + <span class="number">1</span></div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(arr[mid] &gt; data) &#123;</div><div class="line">      upperBound = mid - <span class="number">1</span></div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      <span class="keyword">return</span> mid</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="number">-1</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们来测试一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>,<span class="number">13</span>,<span class="number">45</span>,<span class="number">55</span>]</div><div class="line"><span class="built_in">console</span>.log(binSearch(arr,<span class="number">5</span>))  <span class="comment">// 4</span></div></pre></td></tr></table></figure></p>
+<h4 id="计算重复次数"><a href="#计算重复次数" class="headerlink" title="计算重复次数"></a>计算重复次数</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* </span></div><div class="line"> * @arr, data</div><div class="line"> * @count, position 计数器以及是否找到元素</div><div class="line"> * @如果找到了，计数器加1，然后双重循环遍历，一个向上position + 1，一个向下position - 1，找相同元素</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">count</span>(<span class="params">arr, data</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> count = <span class="number">0</span></div><div class="line">  <span class="keyword">let</span> position = binSearch(arr, data)</div><div class="line">  <span class="keyword">if</span>(position &gt; <span class="number">-1</span>) &#123;</div><div class="line">    ++count</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = position - <span class="number">1</span>; i &gt; <span class="number">0</span>; --i) &#123;</div><div class="line">      <span class="keyword">if</span>(arr[i] == data) &#123;</div><div class="line">        ++count</div><div class="line">      &#125;<span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">break</span>;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = position + <span class="number">1</span>; i &lt; arr.length; ++i) &#123;</div><div class="line">      <span class="keyword">if</span>(arr[i] == data) &#123;</div><div class="line">        ++count</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        <span class="keyword">break</span></div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> count</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们来测试一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>,<span class="number">8</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">9</span>,<span class="number">10</span>,<span class="number">11</span>,<span class="number">12</span>]</div><div class="line"><span class="built_in">console</span>.log(count(arr, <span class="number">9</span>))  <span class="comment">// 3</span></div></pre></td></tr></table></figure></p>
+<h3 id="斐波那契"><a href="#斐波那契" class="headerlink" title="斐波那契"></a>斐波那契</h3><h4 id="实现-1"><a href="#实现-1" class="headerlink" title="实现"></a>实现</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @递归</div><div class="line"> * @a1 = 1, a2 = 2, a(n) = a(n-1) + a(n-2)   **n&gt;=3, n∈N* 通项公式</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">recurFib</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(n &lt; <span class="number">2</span>) &#123;</div><div class="line">    <span class="keyword">return</span> n</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">return</span> recurFib(n<span class="number">-1</span>) + recurFib(n<span class="number">-2</span>)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们来测试一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(recurFib(<span class="number">10</span>))  <span class="comment">// 55</span></div></pre></td></tr></table></figure></p>
+<h4 id="优化"><a href="#优化" class="headerlink" title="优化"></a>优化</h4><h5 id="动态规划解决"><a href="#动态规划解决" class="headerlink" title="动态规划解决"></a>动态规划解决</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @太多的值在递归调用中被重新计算，所以效率低下</div><div class="line"> * @用数组记载已经被纪录的值，优化效率</div><div class="line"> */</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">dycFib</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> val = []</div><div class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">0</span>; i&lt;= n; i++) &#123;</div><div class="line">    val[i] = <span class="number">0</span></div><div class="line">  &#125;</div><div class="line">  <span class="keyword">if</span>( n == <span class="number">1</span> || n == <span class="number">2</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="number">1</span></div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    val[<span class="number">1</span>] = <span class="number">1</span></div><div class="line">    val[<span class="number">2</span>] = <span class="number">2</span></div><div class="line">    <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">3</span>; i &lt;= n; i++) &#123;</div><div class="line">      val[i] = val[i<span class="number">-1</span>] + val[i<span class="number">-2</span>]</div><div class="line">    &#125;</div><div class="line">    <span class="keyword">return</span> val[n<span class="number">-1</span>]  <span class="comment">// 0 - 10 是11个数</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们来测试一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(dycFib(<span class="number">10</span>))  <span class="comment">// 55</span></div></pre></td></tr></table></figure></p>
+<h5 id="迭代解决"><a href="#迭代解决" class="headerlink" title="迭代解决"></a>迭代解决</h5><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">iterFib</span>(<span class="params">n</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> last = <span class="number">1</span></div><div class="line">  <span class="keyword">let</span> nextLast = <span class="number">1</span></div><div class="line">  <span class="keyword">let</span> result = <span class="number">1</span></div><div class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> i = <span class="number">2</span>; i &lt; n; i++) &#123;</div><div class="line">    result = last + nextLast</div><div class="line">    last = nextLast</div><div class="line">    nextLast = result</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> result</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>我们来测试一下：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="built_in">console</span>.log(iterFib(<span class="number">10</span>))  <span class="comment">// 55</span></div></pre></td></tr></table></figure></p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/01/20/算法 - 冒泡排序 快速排序/" rel="next" title="算法 - 冒泡排序 快速排序">
+                <i class="fa fa-chevron-left"></i> 算法 - 冒泡排序 快速排序
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.gif"
+               alt="ant" />
+          <p class="site-author-name" itemprop="name">ant</p>
+          <p class="site-description motion-element" itemprop="description"></p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">16</span>
+              <span class="site-state-item-name">Artikel</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">Tags</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#二分查找"><span class="nav-number">1.</span> <span class="nav-text">二分查找</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#例子"><span class="nav-number">1.1.</span> <span class="nav-text">例子</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#简单例子"><span class="nav-number">1.1.1.</span> <span class="nav-text">简单例子</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#实现"><span class="nav-number">1.1.2.</span> <span class="nav-text">实现</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#计算重复次数"><span class="nav-number">1.2.</span> <span class="nav-text">计算重复次数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#斐波那契"><span class="nav-number">2.</span> <span class="nav-text">斐波那契</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#实现-1"><span class="nav-number">2.1.</span> <span class="nav-text">实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#优化"><span class="nav-number">2.2.</span> <span class="nav-text">优化</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态规划解决"><span class="nav-number">2.2.1.</span> <span class="nav-text">动态规划解决</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#迭代解决"><span class="nav-number">2.2.2.</span> <span class="nav-text">迭代解决</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">ant</span>
+</div>
+
+
+<div class="powered-by">
+  Erstellt mit  <a class="theme-link" href="https://hexo.io">Hexo</a>
+</div>
+
+<div class="theme-info">
+  Theme -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+</body>
+</html>

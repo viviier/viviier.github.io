@@ -236,6 +236,198 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/12/Javascript的“强类型数组”/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/12/Javascript的“强类型数组”/" itemprop="url">
+                  Javascript的“强类型数组”
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-12T17:30:44+08:00">
+                2017-02-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="Javascript的“强类型数组”"><a href="#Javascript的“强类型数组”" class="headerlink" title="Javascript的“强类型数组”"></a>Javascript的“强类型数组”</h1><h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>对于Javascript中的数组，大家可能会马上想到：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">46</span>,<span class="number">456</span>,<span class="number">465</span>,<span class="number">798</span>];</div><div class="line"></div><div class="line"><span class="keyword">let</span> arr2 = <span class="keyword">new</span> <span class="built_in">Array</span>()</div><div class="line">arr2[<span class="number">0</span>] = <span class="number">46</span></div><div class="line">arr2[<span class="number">1</span>] = <span class="number">456</span> ...</div></pre></td></tr></table></figure>
+<p>很方便的我们就创建了arr，arr2两个数组。在我们的印象中，对Array对象已经跟数组划分为同一个东西了，可其实它是一个从哈希表扩展的结构体，它提供了push｀splice等一些操作，而它们的效率是很低的。在Javascript中可以创建真正的数组，那就是强类型数组。</p>
+<p>在了解什么是强类型数组之前，我们先来看一道题目：</p>
+<p> <code><b>不使用loop循环，创建一个长度为100的数组，并且每个元素的值等于它的下标。</b></code></p>
+<p>我们来分析：第一步，创建一个长度为100的数组，第二步，让每个元素的值等于它的下标，不能使用使用循环。写成代码就是：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>)</div><div class="line">arr.map(<span class="function">(<span class="params">item, index</span>) =&gt;</span> index)</div><div class="line"><span class="built_in">console</span>.log(arr)</div></pre></td></tr></table></figure>
+<p>是不是感觉很简单，那么我们马上去控制台看看输出了我们想要结果没有：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr.png" alt="图片"></p>
+<p>结果是空的，只有长度却没有内容，我们再在jsbin的console里面看看输出了什么：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr2.png" alt="图片2"></p>
+<p>有一个长度为100的，内容全都是undefined的数组，也就是说map方法并没有帮助我们获取到index。这是因为Javascript数组是稀疏数组，虽然长度是100，单实际上是一个空数组，里面没有真实存在的元素，所以使用map方法，是不会去遍历这个数组100次的，因此需要让这个数组有内容：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).join(<span class="string">','</span>).split(<span class="string">','</span>)</div></pre></td></tr></table></figure>
+<p>我们先用join方法将这100个数组通过”,”逗号合并为一个字符串，然后再以”,”逗号为分割符把字符串分割为数组，就得到了一个长度为100的，“空”数组：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr3.png" alt="图片3"></p>
+<p>然后再通过.map方法来改变元素的值：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Array</span>(<span class="number">100</span>).join(<span class="string">','</span>).split(<span class="string">','</span>)</div><div class="line"><span class="keyword">let</span> newArr = arr.map(<span class="function">(<span class="params">item, index</span>) =&gt;</span> index)</div><div class="line"><span class="built_in">console</span>.log(newArr)</div></pre></td></tr></table></figure>
+<p>就得到了我们想要的结果：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr4.png" alt="图片4"></p>
+<p>让我们看一下最终代码做了些什么，先是创建一个数组，然后通过join方法把它转换成字符串，然后再通过split方法把字符串转换成数组，最后再通过map函数改变数组内的值。那么有没有一种创建出来直接就可以进行map方法的数组呢？答案是有的，那就是javascript的强类型数组。</p>
+<h2 id="“强类型数组”简介"><a href="#“强类型数组”简介" class="headerlink" title="“强类型数组”简介"></a>“强类型数组”简介</h2><h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>随着Javascript的发展，Javascript现在可以调用一些系统底层的东西乳WebGL，这些底层的操作需要直接访问内存，而Javascript本身的Array在内存中是分散无法与底层操作对接，因此引入了这些强类型的数组。</p>
+<p>强类型数组有三种基本类型：</p>
+<ol>
+<li>Int 整数</li>
+<li>Uint 无符号整数</li>
+<li>Float IEEE754 浮点数</li>
+</ol>
+<p>根据这些基本类型可以引申出8中类数组：</p>
+<ol>
+<li>Int8Array</li>
+<li>Uint8Array</li>
+<li>Ini16Array</li>
+<li>Uint16Array</li>
+<li>Int32Array</li>
+<li>Uint32Array</li>
+<li>Float32Array</li>
+<li>Float64Array</li>
+</ol>
+<p>这些类数组的规律性很强，命名都是: 基本类型＋位数＋Array。我们都知道一个字节是8位的，所以8位的数组中每个元素就占一个字节。同理可知64位的数组每个元素占8个字节。就拿Int8Array来说，它是8位的整数。8位可以表示28=256个数字。而Int是有符号的，所以Int8Array的元素可以表示-128到127的整数。而Uint8Array的元素是无符号的，同理可知它可以表示0-255的整数。由于这些数组是使用线性储存，因此它们是定长的，无法给数组添加元素。超出索引的赋值不会报错，也不会生效。</p>
+<h3 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h3><h4 id="简单调用"><a href="#简单调用" class="headerlink" title="简单调用"></a>简单调用</h4><p>通过new一个(基本类型)＋(位数)＋Array就可以得到一个我们想要的数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(<span class="number">5</span>)</div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>在这里我们得到了长度为5的8位无符号整形的空数组：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr5.png" alt="图片5"></p>
+<p>我们还可以通过传递一个array对象来把它转换为强类型数组：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>]</div><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(arr)</div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>这样会得到一个跟Array对象相同数据的强类型数组：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr6.png" alt="图片6"></p>
+<p>这是最常用的两种创建方式。第一种传入数组大小，创建与传入值相同长度的数组，并且把数组内的元素都初始化为0。第二种传入Array对象进行转换，这样得到的数组每一项的值就是原来Array对象中每一项的值，而遇到无法转换的（如英文字符串等）则被置为0：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>([<span class="string">'123'</span>,<span class="string">'xyz'</span>,<span class="number">456</span>])</div><div class="line"><span class="built_in">console</span>.log(a)  <span class="comment">// [123, 0, 200]</span></div></pre></td></tr></table></figure>
+<p>这里的’123’会被正常输出，而’xyz’则因为无法转换输出0，而456是因为8位职能表示0-255的整数，因此如果要正常输出，则需将new Uint X Array改为16位或32位。</p>
+<p>除了这两种创建方式外，还有一种不常用的方式。ArrayBuffer，传入一块内存指针来创建数组。ArrayBuffer的功能和C语言中的malloc相似，申请一块连续的内存，只不过它不需要手动释放内存。ArrayBuffer的返回值是一个封装成了对象的指针，下面是使用例子：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> buf = <span class="keyword">new</span> <span class="built_in">ArrayBuffer</span>(<span class="number">4</span>)</div><div class="line"><span class="keyword">let</span> a = <span class="keyword">new</span> <span class="built_in">Uint16Array</span>(buf)</div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>这里输出的结果是：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr7.png" alt="图片7"></p>
+<p>这个测试我就不截图了，a这个数组只有两个元素。因为Uint16Array是16位的，也就是每个元素占两个字节。而之前申请的内存控件是4个字节，因此生成的数组只有两个元素。</p>
+<h4 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h4><p>说了这么多，相信你也大概了解了Javascript中的“强类型数组”是个什么东西，那么让我们回到开始的那道题，new一个强类型的数组会自动的把数组内的元素都初始化为0，因此我们无需再去使用需要通过join和split填充的Array对象，只需要new一个Uint8Array无符号的整形，然后进行map方法改变数组内的值即可：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> arr = <span class="keyword">new</span> <span class="built_in">Uint8Array</span>(<span class="number">100</span>).map(<span class="function">(<span class="params">item, index</span>) =&gt;</span> index)</div><div class="line"><span class="built_in">console</span>.log(arr)</div></pre></td></tr></table></figure>
+<p>这样输出的arr为：</p>
+<p><img src="http://okuesjok0.bkt.clouddn.com/arr8.png" alt="图片8"></p>
+<p>这样使用Javascript的”强类型数组“也很方便的完成了题目的要求。</p>
+<h2 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h2><p>这篇文章主要是介绍Javascript中的“强类型数组”的基本概念以及它的一些使用方法，如果想要深入研究，可以去查阅官方文档。</p>
+<h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="http://www.cnblogs.com/yugege/p/5292612.html" target="_blank" rel="external">渔歌 - 阿里前端笔试总结</a></p>
+<p><a href="https://www.web-tinker.com/article/20101.html" target="_blank" rel="external">次碳酸钴 - JavaScript的“强类型数组”简介</a></p>
+<h3 id="拓展阅读"><a href="#拓展阅读" class="headerlink" title="拓展阅读"></a>拓展阅读</h3><p><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Typed_arrays" target="_blank" rel="external">MDN: JavaScript typed arrays</a></p>
+<p><a href="http://www.tuicool.com/articles/AfYnEf" target="_blank" rel="external">javascript中的稀疏数组(sparse array)和密集数组</a></p>
+<h3 id="关于题目的另外解法"><a href="#关于题目的另外解法" class="headerlink" title="关于题目的另外解法"></a>关于题目的另外解法</h3><p>除了使用join,split以及创建一个“强类型数组”外，这道题目还有另外两种方法可以解决。</p>
+<ol>
+<li>使用间歇性定时器setInterval</li>
+</ol>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = [],</div><div class="line">    i = <span class="number">0</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> interval = setInterval(<span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  i &lt; <span class="number">100</span> ? a.push(i++) : clearInterval(interval)</div><div class="line">&#125;, <span class="number">0</span>)</div><div class="line"></div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>通过一个计数器来进行自增push值。</p>
+<p>2.使用ES6的Array.from方法</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = <span class="built_in">Array</span>.from(<span class="built_in">Array</span>(<span class="number">100</span>).keys())</div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>这段代码还可以简写为：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> a = [...Array(<span class="number">100</span>).keys()]</div><div class="line"><span class="built_in">console</span>.log(a)</div></pre></td></tr></table></figure>
+<p>个人更推荐使用ES6的<code>[…Array(100).keys()]</code>这种方法</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/07/[译]驯服ES7的异步野兽 - async/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1575,131 +1767,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/28/React 入门实例(ruanyifeng)/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="ant">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Hexo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/28/React 入门实例(ruanyifeng)/" itemprop="url">
-                  React 入门实例(ruanyifeng)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-28T23:51:31+08:00">
-                2016-12-28
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="一、Hello-World"><a href="#一、Hello-World" class="headerlink" title="一、Hello World"></a>一、Hello World</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> &#123; render &#125; = ReactDOM;</div><div class="line"></div><div class="line">render(</div><div class="line">  &lt;h1&gt;Hello, world&lt;/h1&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="二、JSX语法"><a href="#二、JSX语法" class="headerlink" title="二、JSX语法"></a>二、JSX语法</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">let</span> names = [<span class="string">'Alice'</span>, <span class="string">'Emily'</span>, <span class="string">'Kate'</span>];</div><div class="line"></div><div class="line">render(</div><div class="line">  &lt;div&gt;</div><div class="line">    &#123;</div><div class="line">    names.map(name =&gt; &#123;</div><div class="line">      return &lt;p&gt;hello &#123;name&#125;&lt;/p&gt;</div><div class="line">    &#125;)</div><div class="line">      &#125;</div><div class="line">    &lt;/div&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="三、组件"><a href="#三、组件" class="headerlink" title="三、组件"></a>三、组件</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> &#123; Component &#125; = React;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;h1&gt;Hello &#123;this.props.name&#125;&lt;/h1&gt;</div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">render(</div><div class="line">  &lt;HelloMessage name='nico' /&gt;,</div><div class="line">  document.getElementById('root')</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="四、this-props-children"><a href="#四、this-props-children" class="headerlink" title="四、this.props.children"></a>四、this.props.children</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> &#123; Component, Children &#125; = React;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;ol&gt;</div><div class="line">        &#123; Children.map(this.props.children, child=&gt; &lt;li&gt;&#123;child&#125;&lt;/li&gt;)&#125;    // Array.prototype.map(this.props.children, fn())</div><div class="line">       &lt;/ol&gt;</div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">render(</div><div class="line">  &lt;HelloMessage&gt;</div><div class="line">    &lt;span&gt;hello&lt;/span&gt;</div><div class="line">    &lt;span&gt;world&lt;/span&gt;</div><div class="line">    &lt;/HelloMessage&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="五、defaultProps"><a href="#五、defaultProps" class="headerlink" title="五、defaultProps"></a>五、defaultProps</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">static</span> defaultProps = &#123;</div><div class="line">    <span class="attr">name</span>: <span class="string">'nico'</span></div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  render = <span class="function"><span class="params">()</span> =&gt;</span> (</div><div class="line">    &lt;h1&gt;Hello &#123;this.props.name&#125;&lt;/h1&gt;</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line">render(</div><div class="line">&lt;HelloMessage /&gt;,</div><div class="line">  document.getElementById('root')</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="六、获取真实的节点"><a href="#六、获取真实的节点" class="headerlink" title="六、获取真实的节点"></a>六、获取真实的节点</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line"> handlerClick = <span class="function"><span class="params">()</span>=&gt;</span> &#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="keyword">this</span>.input.value) </div><div class="line"> &#125;;</div><div class="line">render = <span class="function"><span class="params">()</span>=&gt;</span>(</div><div class="line">    &lt;div&gt;</div><div class="line">      &lt;input ref=&#123;node=&gt;this.input=node&#125; /&gt;</div><div class="line">      &lt;button onClick=&#123;this.handlerClick&#125;&gt;</div><div class="line">        Clickme</div><div class="line">      &lt;/button&gt;</div><div class="line">      &lt;/div&gt;</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="七、state"><a href="#七、state" class="headerlink" title="七、state"></a>七、state</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    state = &#123;</div><div class="line">      <span class="attr">liked</span>: <span class="literal">false</span></div><div class="line">   &#125;;</div><div class="line"></div><div class="line">  handleClick = <span class="function"><span class="params">()</span>=&gt;</span> &#123;</div><div class="line">    <span class="keyword">this</span>.setState(&#123;</div><div class="line">      <span class="attr">liked</span>: !<span class="keyword">this</span>.state.liked</div><div class="line">    &#125;)</div><div class="line">  &#125;;</div><div class="line">  </div><div class="line">render = <span class="function">(<span class="params">text=<span class="keyword">this</span>.state.liked? <span class="string">'like'</span> : <span class="string">'don\'t like'</span></span>)=&gt;</span>(</div><div class="line">    &lt;p onClick=&#123;this.handleClick&#125;&gt;</div><div class="line">    you &#123;text&#125; this.click to toggle</div><div class="line">  &lt;/p&gt;</div><div class="line">  );</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="八、表单"><a href="#八、表单" class="headerlink" title="八、表单"></a>八、表单</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  state = &#123;</div><div class="line">    <span class="attr">value</span>: <span class="string">'hello'</span></div><div class="line">  &#125;;</div><div class="line">handleChange = <span class="function">(<span class="params">e</span>)=&gt;</span> &#123;</div><div class="line">  <span class="keyword">this</span>.setState(&#123;</div><div class="line">    <span class="attr">value</span>: e.target.value</div><div class="line">  &#125;)</div><div class="line">&#125;;</div><div class="line">render = <span class="function">(<span class="params">value=<span class="keyword">this</span>.state.value</span>)=&gt;</span> (</div><div class="line">  &lt;div&gt;</div><div class="line">    &lt;input type='text' onChange = &#123;this.handleChange&#125; /&gt;</div><div class="line">    &lt;p&gt;&#123;value&#125;&lt;/p&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="九、组件生命周期"><a href="#九、组件生命周期" class="headerlink" title="九、组件生命周期"></a>九、组件生命周期</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">HelloMessage</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  state = &#123;</div><div class="line">    <span class="attr">opacity</span>: <span class="number">1.0</span></div><div class="line">  &#125;;</div><div class="line"></div><div class="line">  componentDidMount = <span class="function"><span class="params">()</span>=&gt;</span> &#123;</div><div class="line">    <span class="keyword">this</span>.timer = setInterval(<span class="function"><span class="params">()</span>=&gt;</span>&#123;</div><div class="line">      <span class="keyword">let</span> opacity = <span class="keyword">this</span>.state.opacity;</div><div class="line">      opacity -= <span class="number">.05</span>;</div><div class="line">       <span class="keyword">if</span> (opacity &lt; <span class="number">0.1</span>) &#123;</div><div class="line">        opacity = <span class="number">1.0</span>;</div><div class="line">      &#125;</div><div class="line">      <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">opacity</span>: opacity</div><div class="line">      &#125;);</div><div class="line">    &#125;, <span class="number">100</span>)</div><div class="line">  &#125;;</div><div class="line">  render=<span class="function"><span class="params">()</span>=&gt;</span> (</div><div class="line">    &lt;div style=&#123;&#123; opacity: this.state.opacity&#125;&#125; &gt;</div><div class="line">      Hello &#123;this.props.name&#125;</div><div class="line">      &lt;/div&gt;</div><div class="line">  );</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* 关于componentWillMount */</span></div><div class="line"></div><div class="line"><span class="comment">// The ES5 way</span></div><div class="line"><span class="keyword">var</span> EmbedModal = React.createClass(&#123;</div><div class="line">  <span class="attr">componentWillMount</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123; … &#125;,</div><div class="line">&#125;);</div><div class="line"><span class="comment">// The ES6+ way</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">EmbedModal</span> <span class="keyword">extends</span> <span class="title">React</span>.<span class="title">Component</span> </span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(props) &#123;</div><div class="line">    <span class="keyword">super</span>(props);</div><div class="line">    <span class="comment">// Operations usually carried out in componentWillMount go here</span></div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<h3 id="Ajax"><a href="#Ajax" class="headerlink" title="Ajax"></a>Ajax</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div></pre></td><td class="code"><pre><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">UserGist</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  state = &#123;</div><div class="line">    <span class="attr">username</span>: <span class="string">''</span>,</div><div class="line">    <span class="attr">lastGistUrl</span>: <span class="string">''</span></div><div class="line">  &#125;;</div><div class="line">  </div><div class="line">  componentDidMount = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">    $.get(<span class="keyword">this</span>.props.source, (result) =&gt; &#123;</div><div class="line">    <span class="keyword">let</span> lastGist = result[<span class="number">0</span>];</div><div class="line">      <span class="keyword">this</span>.setState(&#123;</div><div class="line">        <span class="attr">username</span>: lastGist.owner.login,</div><div class="line">        <span class="attr">lastGistUrl</span>: lastGist.html_url</div><div class="line">      &#125;)</div><div class="line">    &#125;)</div><div class="line">  &#125;;</div><div class="line"></div><div class="line"><span class="comment">/* isMOunt()废弃后的解决方案 当异步加载数据的时候，使用 componentWillUnmount 来取消任何未完成的请求 在组件卸载之前 */</span></div><div class="line"></div><div class="line">componentWillUnmount = <span class="function"><span class="params">()</span> =&gt;</span> &#123;  </div><div class="line">    <span class="keyword">this</span>.serverRequest.abort();  </div><div class="line">  &#125;;</div><div class="line"></div><div class="line">render = <span class="function"><span class="params">()</span>=&gt;</span>(</div><div class="line">  &lt;div&gt;</div><div class="line">    &#123;this.state.username&#125;'s last gist is &lt;a href=&#123;this.state.lastGistUrl&#125;&gt;here&lt;/a&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">);</div><div class="line">&#125;</div><div class="line"></div><div class="line">render(</div><div class="line">  &lt;UserGist source="https://api.github.com/users/octocat/gists" /&gt;,</div><div class="line">  document.body</div><div class="line">)</div></pre></td></tr></table></figure>
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1745,7 +1812,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">17</span>
+              <span class="site-state-item-count">18</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>

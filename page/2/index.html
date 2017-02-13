@@ -236,6 +236,139 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/30/React-redux 入门实例(ruanyifeng)/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2016/12/30/React-redux 入门实例(ruanyifeng)/" itemprop="url">
+                  React-redux 入门实例(ruanyifeng)
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-30T22:21:58+08:00">
+                2016-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="React-redux"><a href="#React-redux" class="headerlink" title="React-redux"></a>React-redux</h3><p>React-redux将组件分为两大类：UI组件和容器组件。</p>
+<h4 id="UI组件特点："><a href="#UI组件特点：" class="headerlink" title="UI组件特点："></a>UI组件特点：</h4><ul>
+<li>只负责UI的呈现，不带有任何的业务逻辑</li>
+<li>没有状态（即不使用this.state属性）</li>
+<li>所有数据都由参数（this.props）提供</li>
+<li>不使用任何的Redux的API</li>
+</ul>
+<p>计数器例子的Counter组件就是一个UI组件，他所需要的数据在render里由props提供</p>
+<h4 id="容器组件特点："><a href="#容器组件特点：" class="headerlink" title="容器组件特点："></a>容器组件特点：</h4><ul>
+<li>负责管理数据和业务逻辑，不负责UI的呈现</li>
+<li>带有内部状态</li>
+<li>使用Redux的API</li>
+</ul>
+<p>换句话说，UI组件负责UI的呈现，容器组件负责管理数据和逻辑。<br>React-redux规定，所有的UI组件都由用户提供，容器组件则有React-redux自动生成。也就是说用户负责视觉层，状态管理全交给它。</p>
+<h3 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* reducer */</span></div><div class="line"><span class="keyword">const</span> reducer = <span class="function">(<span class="params">state=<span class="number">0</span>, action</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">switch</span>(action.type) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'ADD'</span>:</div><div class="line">      <span class="keyword">return</span> state+<span class="number">1</span>;</div><div class="line">    <span class="keyword">case</span> <span class="string">'DEC'</span>:</div><div class="line">      <span class="keyword">return</span> state<span class="number">-1</span>;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> state;</div><div class="line">                    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 创建状态 */</span></div><div class="line"><span class="keyword">const</span> &#123; createStore &#125; = Redux;</div><div class="line"><span class="keyword">const</span> store = createStore(reducer);</div><div class="line"></div><div class="line"><span class="keyword">let</span> next = store.dispatch;</div><div class="line">store.dispatch = <span class="function"><span class="keyword">function</span> <span class="title">dispatchAndLog</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'dispatching'</span>, action);</div><div class="line">  next(action);</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'next state'</span>, store.getState());</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 然后构建Counter组件 */</span></div><div class="line"><span class="keyword">const</span> &#123; Component &#125; = React;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render()&#123;</div><div class="line">    <span class="keyword">const</span> &#123;value, increment, deccrement&#125; = <span class="keyword">this</span>.props;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;&#123;value&#125;&lt;/h1&gt;</div><div class="line">        &lt;button onClick=&#123;increment&#125;&gt;+&lt;/button&gt;</div><div class="line">        &lt;button onClick=&#123;deccrement&#125;&gt;-&lt;/button&gt;</div><div class="line">        &lt;/div&gt;</div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 首先写好需要实时渲染的虚拟dom */</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> render = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;Counter </div><div class="line">      value=&#123;store.getState()&#125;</div><div class="line">      increment=&#123;() =&gt; &#123;</div><div class="line">            store.dispatch(&#123;</div><div class="line">              type: 'ADD'</div><div class="line">            &#125;)</div><div class="line">          &#125;&#125;</div><div class="line">      deccrement=&#123;() =&gt; &#123;</div><div class="line">            store.dispatch(&#123;</div><div class="line">              type: 'DEC'</div><div class="line">            &#125;)</div><div class="line">          &#125;&#125;</div><div class="line">      /&gt;,</div><div class="line">    document.getElementById('root')</div><div class="line">  )</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/* 然后初始化执行render，并且监听render */</div><div class="line">render();</div><div class="line">store.subscribe(render);</div></pre></td></tr></table></figure>
+<h3 id="使用connect和Provider来生成计数器"><a href="#使用connect和Provider来生成计数器" class="headerlink" title="使用connect和Provider来生成计数器"></a>使用connect和Provider来生成计数器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> &#123; Component, PropTypes &#125; = React</div><div class="line"><span class="keyword">const</span> &#123; createStore &#125; = Redux</div><div class="line"><span class="keyword">const</span> &#123; Provider, connect &#125; = ReactRedux</div><div class="line"></div><div class="line"><span class="comment">/* UI层面 */</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">const</span> &#123; value, onIncreaseClick &#125; = <span class="keyword">this</span>.props</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div&gt;</div><div class="line">    &lt;span&gt;&#123;value&#125;&lt;/span&gt;</div><div class="line">           &lt;button onClick=&#123;onIncreaseClick&#125;&gt;Increase&lt;/button&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">  )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Counter.propTypes = &#123;</div><div class="line">  <span class="attr">value</span>: PropTypes.number.isRequired,</div><div class="line">  <span class="attr">onIncreaseClick</span>: PropTypes.func.isRequired</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* value映射state，onIncreaseClick映射dispatch */</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapStateToProps</span>(<span class="params">state</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">value</span>: state.count</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapDispatchToProps</span>(<span class="params">dispatch</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">onIncreaseClick</span>: <span class="function"><span class="params">()</span> =&gt;</span> dispatch(increaseAction)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// action</span></div><div class="line"><span class="keyword">const</span> increaseAction = &#123; <span class="attr">type</span>: <span class="string">'increase'</span> &#125;</div><div class="line"></div><div class="line"><span class="comment">/* 生成容器组件 */</span></div><div class="line"><span class="keyword">const</span> App = connect(</div><div class="line">  mapStateToProps,</div><div class="line">  mapDispatchToProps</div><div class="line">)(Counter)</div><div class="line"></div><div class="line"><span class="comment">/* reducer */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">counter</span>(<span class="params">state = &#123;count: <span class="number">0</span>&#125;, action</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> count = state.count;</div><div class="line">  <span class="keyword">switch</span>(action.type) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'increase'</span>: </div><div class="line">      <span class="keyword">return</span> &#123; <span class="attr">count</span>: count+<span class="number">1</span> &#125;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> state</div><div class="line">                    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> store = createStore(counter)</div><div class="line"></div><div class="line">ReactDOM.render(</div><div class="line">  &lt;Provider store=&#123;store&#125;&gt;</div><div class="line">    &lt;App /&gt;</div><div class="line">    &lt;/Provider&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
+<p>mapStateToProps会订阅store，每当state更新时，就会重新计算UI组件的参数，从而触发UI组件的重新渲染。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/28/React 入门实例(ruanyifeng)/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1356,7 +1489,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
@@ -1366,7 +1499,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">Tags</span>
               </a>
             </div>

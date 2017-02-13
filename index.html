@@ -236,6 +236,149 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/13/数据结构 - 二叉树的创建、遍历、查找和删除/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="ant">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="/images/avatar.gif">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="Hexo">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                
+                <a class="post-title-link" href="/2017/02/13/数据结构 - 二叉树的创建、遍历、查找和删除/" itemprop="url">
+                  数据结构 - 二叉树的创建、遍历、查找和删除
+                </a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">Veröffentlicht am</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-02-13T21:02:33+08:00">
+                2017-02-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="数据结构-二叉树的创建、遍历、查找和删除"><a href="#数据结构-二叉树的创建、遍历、查找和删除" class="headerlink" title="数据结构 - 二叉树的创建、遍历、查找和删除"></a>数据结构 - 二叉树的创建、遍历、查找和删除</h1><h2 id="实现二叉查找树"><a href="#实现二叉查找树" class="headerlink" title="实现二叉查找树"></a>实现二叉查找树</h2><p>二叉查找树由节点组成，所以我们要定义的第一个对象就是Node:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @节点有data，左子节点，右子节点三个属性</div><div class="line"> * @以及一个show方法来输出节点的值</div><div class="line"> */</div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Node</span></span>&#123;</div><div class="line">  <span class="keyword">constructor</span>(data, left, right) &#123;</div><div class="line">    <span class="keyword">this</span>.data = data</div><div class="line">    <span class="keyword">this</span>.left = left</div><div class="line">    <span class="keyword">this</span>.right = right</div><div class="line">  &#125;</div><div class="line">  show()&#123;</div><div class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.data</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着来创建一个二叉查找树：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line"> * @BST默认有一个根节点root</div><div class="line"> */</div><div class="line">class BST&#123;</div><div class="line">  constructor()&#123;</div><div class="line">    this.root = null</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当然，我们还需要为BST（二叉查找树）添加一些方法，如插入节点：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @insert方法，接受一个数据，然后通过new Node来创建节点</div><div class="line"> * @首先，判断当前的树是不是空树，如果是空树，那么这个newNode就是树的根节点</div><div class="line"> * @否则创建一个指针指向根节点，temp存储每次循环的父节点，对树进行循环判断</div><div class="line"> * @如果data小于指针所指向节点的data，那么，指向节点指向指向节点的左子节点，然后判断指向节点的left是否有值，</div><div class="line"> * @没有，就把newNode赋给指向节点的左子节点，跳出循环，如果有，就继续循环判断</div><div class="line"> * @否则，就将newNode进行右子节点的判断</div><div class="line"> */</div><div class="line"></div><div class="line">insert(data) &#123;</div><div class="line">  <span class="keyword">let</span> newNode = <span class="keyword">new</span> Node(data, <span class="literal">null</span>, <span class="literal">null</span>)</div><div class="line">  </div><div class="line">  <span class="keyword">if</span>(<span class="keyword">this</span>.root === <span class="literal">null</span>) &#123;</div><div class="line">    <span class="keyword">this</span>.root = newNode</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    <span class="keyword">let</span> current = <span class="keyword">this</span>.root,</div><div class="line">        temp</div><div class="line">    </div><div class="line">    <span class="keyword">while</span>(<span class="literal">true</span>) &#123;</div><div class="line">      temp = current</div><div class="line">      <span class="keyword">if</span>(data &lt; current.data) &#123;</div><div class="line">        current = current.left</div><div class="line">        <span class="keyword">if</span>(current === <span class="literal">null</span>) &#123;</div><div class="line">          temp.left = newNode</div><div class="line">          <span class="keyword">break</span></div><div class="line">        &#125;</div><div class="line">      &#125; <span class="keyword">else</span> &#123;</div><div class="line">        current = current.right</div><div class="line">        <span class="keyword">if</span>(current === <span class="literal">null</span>) &#123;</div><div class="line">          temp.left = newNodee</div><div class="line">          <span class="keyword">break</span></div><div class="line">        &#125;</div><div class="line">      &#125;</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="遍历二叉查找树"><a href="#遍历二叉查找树" class="headerlink" title="遍历二叉查找树"></a>遍历二叉查找树</h2><p>现在我们的BST已经初步成型，接下来就是实现遍历BST的方法。</p>
+<p>树的遍历方法有三种：中序、先序和后序。中序遍历按照节点上的键值，以升序访问树上的所有节点。先序遍历先访问根节点，然后以再访问左子树和右子树。后序遍历先访问叶子节点，从左子树到右子树，再到根节点。</p>
+<p>首先是中序遍历：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @用递归的方式实现中序遍历</div><div class="line"> * @先访问左子树，再访问根节点，最后访问右子树</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">inOrder</span>(<span class="params">node</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(!(node === <span class="literal">null</span>)) &#123;</div><div class="line">    inOrder(node.left)</div><div class="line">    <span class="built_in">console</span>.log(node.show())</div><div class="line">    inOrder(node.right)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>正序遍历：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @用递归的方式实现正序遍历</div><div class="line"> * @先访问根节点，再访问左子树，最后访问右子树</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">preOrder</span>(<span class="params">node</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(!(node === <span class="literal">null</span>)) &#123;</div><div class="line">    <span class="built_in">console</span>.log(node.show())</div><div class="line">    inOrder(node.left)</div><div class="line">    inOrder(node.right)</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>后序遍历：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @用递归的方式实现后序遍历</div><div class="line"> * @先访问叶子节点，从左子树到右子树，最后访问根节点</div><div class="line"> */</div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">postOrder</span>(<span class="params">node</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(!(node === <span class="literal">null</span>)) &#123;</div><div class="line">    inOrder(node.left)</div><div class="line">    inOrder(node.right)</div><div class="line">    <span class="built_in">console</span>.log(node.show())</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="在二叉查找树上进行查找"><a href="#在二叉查找树上进行查找" class="headerlink" title="在二叉查找树上进行查找"></a>在二叉查找树上进行查找</h2><p>对BST通常有三种查找类型：</p>
+<ol>
+<li>查找給定值</li>
+<li>查找最小值</li>
+<li>查找最大值</li>
+</ol>
+<p>我们先来实现查找最小值和最大值:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line"> * @查找最小值</div><div class="line"> * @最小值总是在树的左子节点上</div><div class="line"> * @因此只需要对树的左子树挨个遍历，直到遍历到树的最左边的节点即可</div><div class="line"> */</div><div class="line">getMin()&#123;</div><div class="line">  let current = this.root</div><div class="line">  </div><div class="line">  while(!(current.left === null)) &#123;</div><div class="line">    current = current.left</div><div class="line">  &#125;</div><div class="line">  return current</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line"> * @查找最大值</div><div class="line"> * @最大值总是在树的右子节点上</div><div class="line"> * @因此只需要对树的右子树挨个遍历，直到遍历到树的最右边的节点即可</div><div class="line"> */</div><div class="line">getMax()&#123;</div><div class="line">  let current = this.root</div><div class="line">  </div><div class="line">  while(!(current.right === null)) &#123;</div><div class="line">    current = current.right</div><div class="line">  &#125;</div><div class="line">  return current</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>接着我们来写查找給定值的函数：</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/*</span></div><div class="line"> * @查找給定值的节点</div><div class="line"> * @创建current指针指向当前根节点，进行比较后判断大小</div><div class="line"> * @如果給定值小于指针指向节点，那么向左遍历</div><div class="line"> * @反之，向右遍历</div><div class="line"> */</div><div class="line">find(data) &#123;</div><div class="line">  <span class="keyword">let</span> current = <span class="keyword">this</span>.root</div><div class="line">  </div><div class="line">  <span class="keyword">while</span>(current !== <span class="literal">null</span>) &#123;</div><div class="line">    <span class="keyword">if</span>(data === current.data) &#123;</div><div class="line">      <span class="keyword">return</span> current</div><div class="line">    &#125; <span class="keyword">else</span> <span class="keyword">if</span>(data &lt; current.data) &#123;</div><div class="line">      current = current.left</div><div class="line">    &#125; <span class="keyword">else</span> &#123;</div><div class="line">      current = current.right</div><div class="line">    &#125;</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> <span class="literal">null</span></div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="从二叉查找树上删除节点"><a href="#从二叉查找树上删除节点" class="headerlink" title="从二叉查找树上删除节点"></a>从二叉查找树上删除节点</h2><p>这样我们就实现了一个二叉查找树的基本功能，但是最后还要给这个树加上一个方法，那就是删除节点:</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">remove</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">  <span class="keyword">this</span>.root = removeNode(<span class="keyword">this</span>.root, data)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">getSmallest</span>(<span class="params">node</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(node.left === <span class="literal">null</span>) &#123;</div><div class="line">    <span class="keyword">return</span> node</div><div class="line">  &#125;</div><div class="line">  <span class="keyword">return</span> getSmallest(node.left)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">removeNode</span>(<span class="params">node, data</span>) </span>&#123;</div><div class="line">  <span class="keyword">if</span>(node === <span class="literal">null</span>) &#123;</div><div class="line">    <span class="keyword">return</span> <span class="literal">null</span></div><div class="line">  &#125;</div><div class="line">  </div><div class="line">  <span class="keyword">if</span>(data === node.data) &#123;</div><div class="line">    <span class="keyword">if</span>(node.left === <span class="literal">null</span> &amp;&amp; node.right === <span class="literal">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> <span class="literal">null</span></div><div class="line">    &#125;</div><div class="line">  <span class="keyword">if</span>(node.left === <span class="literal">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> node.right</div><div class="line">    &#125;</div><div class="line">  <span class="keyword">if</span>(node.right === <span class="literal">null</span>) &#123;</div><div class="line">      <span class="keyword">return</span> node.left</div><div class="line">    &#125;</div><div class="line">   </div><div class="line">   <span class="keyword">let</span> tempNode = getSmallest(node.right)</div><div class="line">   node.data = tempNode.data</div><div class="line">   node.right = removeNode(node.left, tempNode.data)</div><div class="line">   <span class="keyword">return</span> node</div><div class="line">  &#125; <span class="keyword">else</span> <span class="keyword">if</span>(data &lt; node.data) &#123;</div><div class="line">    node.left = removeNode(node.left, data)</div><div class="line">    <span class="keyword">return</span> node</div><div class="line">  &#125; <span class="keyword">else</span> &#123;</div><div class="line">    node.right = removeNode(node.right, data)</div><div class="line">    <span class="keyword">return</span> node</div><div class="line">  &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
   <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/02/12/Javascript的“强类型数组”/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1634,139 +1777,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/30/React-redux 入门实例(ruanyifeng)/">
-
-  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <meta itemprop="name" content="ant">
-    <meta itemprop="description" content="">
-    <meta itemprop="image" content="/images/avatar.gif">
-  </span>
-
-  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-    <meta itemprop="name" content="Hexo">
-    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
-      <img style="display:none;" itemprop="url image" alt="Hexo" src="">
-    </span>
-  </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-            
-            
-              
-                
-                <a class="post-title-link" href="/2016/12/30/React-redux 入门实例(ruanyifeng)/" itemprop="url">
-                  React-redux 入门实例(ruanyifeng)
-                </a>
-              
-            
-          </h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              <span class="post-meta-item-text">Veröffentlicht am</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-30T22:21:58+08:00">
-                2016-12-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-
-          
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h3 id="React-redux"><a href="#React-redux" class="headerlink" title="React-redux"></a>React-redux</h3><p>React-redux将组件分为两大类：UI组件和容器组件。</p>
-<h4 id="UI组件特点："><a href="#UI组件特点：" class="headerlink" title="UI组件特点："></a>UI组件特点：</h4><ul>
-<li>只负责UI的呈现，不带有任何的业务逻辑</li>
-<li>没有状态（即不使用this.state属性）</li>
-<li>所有数据都由参数（this.props）提供</li>
-<li>不使用任何的Redux的API</li>
-</ul>
-<p>计数器例子的Counter组件就是一个UI组件，他所需要的数据在render里由props提供</p>
-<h4 id="容器组件特点："><a href="#容器组件特点：" class="headerlink" title="容器组件特点："></a>容器组件特点：</h4><ul>
-<li>负责管理数据和业务逻辑，不负责UI的呈现</li>
-<li>带有内部状态</li>
-<li>使用Redux的API</li>
-</ul>
-<p>换句话说，UI组件负责UI的呈现，容器组件负责管理数据和逻辑。<br>React-redux规定，所有的UI组件都由用户提供，容器组件则有React-redux自动生成。也就是说用户负责视觉层，状态管理全交给它。</p>
-<h3 id="计数器"><a href="#计数器" class="headerlink" title="计数器"></a>计数器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div></pre></td><td class="code"><pre><div class="line"><span class="comment">/* reducer */</span></div><div class="line"><span class="keyword">const</span> reducer = <span class="function">(<span class="params">state=<span class="number">0</span>, action</span>) =&gt;</span> &#123;</div><div class="line">  <span class="keyword">switch</span>(action.type) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'ADD'</span>:</div><div class="line">      <span class="keyword">return</span> state+<span class="number">1</span>;</div><div class="line">    <span class="keyword">case</span> <span class="string">'DEC'</span>:</div><div class="line">      <span class="keyword">return</span> state<span class="number">-1</span>;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> state;</div><div class="line">                    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 创建状态 */</span></div><div class="line"><span class="keyword">const</span> &#123; createStore &#125; = Redux;</div><div class="line"><span class="keyword">const</span> store = createStore(reducer);</div><div class="line"></div><div class="line"><span class="keyword">let</span> next = store.dispatch;</div><div class="line">store.dispatch = <span class="function"><span class="keyword">function</span> <span class="title">dispatchAndLog</span>(<span class="params">action</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'dispatching'</span>, action);</div><div class="line">  next(action);</div><div class="line">  <span class="built_in">console</span>.log(<span class="string">'next state'</span>, store.getState());</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 然后构建Counter组件 */</span></div><div class="line"><span class="keyword">const</span> &#123; Component &#125; = React;</div><div class="line"></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render()&#123;</div><div class="line">    <span class="keyword">const</span> &#123;value, increment, deccrement&#125; = <span class="keyword">this</span>.props;</div><div class="line">    <span class="keyword">return</span> (</div><div class="line">      &lt;div&gt;</div><div class="line">        &lt;h1&gt;&#123;value&#125;&lt;/h1&gt;</div><div class="line">        &lt;button onClick=&#123;increment&#125;&gt;+&lt;/button&gt;</div><div class="line">        &lt;button onClick=&#123;deccrement&#125;&gt;-&lt;/button&gt;</div><div class="line">        &lt;/div&gt;</div><div class="line">    )</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"></div><div class="line"><span class="comment">/* 首先写好需要实时渲染的虚拟dom */</span></div><div class="line"></div><div class="line"><span class="keyword">const</span> render = <span class="function"><span class="params">()</span> =&gt;</span> &#123;</div><div class="line">  ReactDOM.render(</div><div class="line">    &lt;Counter </div><div class="line">      value=&#123;store.getState()&#125;</div><div class="line">      increment=&#123;() =&gt; &#123;</div><div class="line">            store.dispatch(&#123;</div><div class="line">              type: 'ADD'</div><div class="line">            &#125;)</div><div class="line">          &#125;&#125;</div><div class="line">      deccrement=&#123;() =&gt; &#123;</div><div class="line">            store.dispatch(&#123;</div><div class="line">              type: 'DEC'</div><div class="line">            &#125;)</div><div class="line">          &#125;&#125;</div><div class="line">      /&gt;,</div><div class="line">    document.getElementById('root')</div><div class="line">  )</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/* 然后初始化执行render，并且监听render */</div><div class="line">render();</div><div class="line">store.subscribe(render);</div></pre></td></tr></table></figure>
-<h3 id="使用connect和Provider来生成计数器"><a href="#使用connect和Provider来生成计数器" class="headerlink" title="使用connect和Provider来生成计数器"></a>使用connect和Provider来生成计数器</h3><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">const</span> &#123; Component, PropTypes &#125; = React</div><div class="line"><span class="keyword">const</span> &#123; createStore &#125; = Redux</div><div class="line"><span class="keyword">const</span> &#123; Provider, connect &#125; = ReactRedux</div><div class="line"></div><div class="line"><span class="comment">/* UI层面 */</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Counter</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">  render() &#123;</div><div class="line">    <span class="keyword">const</span> &#123; value, onIncreaseClick &#125; = <span class="keyword">this</span>.props</div><div class="line">  <span class="keyword">return</span> (</div><div class="line">    &lt;div&gt;</div><div class="line">    &lt;span&gt;&#123;value&#125;&lt;/span&gt;</div><div class="line">           &lt;button onClick=&#123;onIncreaseClick&#125;&gt;Increase&lt;/button&gt;</div><div class="line">    &lt;/div&gt;</div><div class="line">  )</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Counter.propTypes = &#123;</div><div class="line">  <span class="attr">value</span>: PropTypes.number.isRequired,</div><div class="line">  <span class="attr">onIncreaseClick</span>: PropTypes.func.isRequired</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">/* value映射state，onIncreaseClick映射dispatch */</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapStateToProps</span>(<span class="params">state</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">value</span>: state.count</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">mapDispatchToProps</span>(<span class="params">dispatch</span>) </span>&#123;</div><div class="line">  <span class="keyword">return</span> &#123;</div><div class="line">    <span class="attr">onIncreaseClick</span>: <span class="function"><span class="params">()</span> =&gt;</span> dispatch(increaseAction)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// action</span></div><div class="line"><span class="keyword">const</span> increaseAction = &#123; <span class="attr">type</span>: <span class="string">'increase'</span> &#125;</div><div class="line"></div><div class="line"><span class="comment">/* 生成容器组件 */</span></div><div class="line"><span class="keyword">const</span> App = connect(</div><div class="line">  mapStateToProps,</div><div class="line">  mapDispatchToProps</div><div class="line">)(Counter)</div><div class="line"></div><div class="line"><span class="comment">/* reducer */</span></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">counter</span>(<span class="params">state = &#123;count: <span class="number">0</span>&#125;, action</span>) </span>&#123;</div><div class="line">  <span class="keyword">const</span> count = state.count;</div><div class="line">  <span class="keyword">switch</span>(action.type) &#123;</div><div class="line">    <span class="keyword">case</span> <span class="string">'increase'</span>: </div><div class="line">      <span class="keyword">return</span> &#123; <span class="attr">count</span>: count+<span class="number">1</span> &#125;</div><div class="line">    <span class="keyword">default</span>:</div><div class="line">      <span class="keyword">return</span> state</div><div class="line">                    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">const</span> store = createStore(counter)</div><div class="line"></div><div class="line">ReactDOM.render(</div><div class="line">  &lt;Provider store=&#123;store&#125;&gt;</div><div class="line">    &lt;App /&gt;</div><div class="line">    &lt;/Provider&gt;,</div><div class="line">  <span class="built_in">document</span>.getElementById(<span class="string">'root'</span>)</div><div class="line">)</div></pre></td></tr></table></figure>
-<p>mapStateToProps会订阅store，每当state更新时，就会重新计算UI组件的参数，从而触发UI组件的重新渲染。</p>
-
-          
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1812,7 +1822,7 @@
         <nav class="site-state motion-element">
           <div class="site-state-item site-state-posts">
             <a href="/archives">
-              <span class="site-state-item-count">18</span>
+              <span class="site-state-item-count">19</span>
               <span class="site-state-item-name">Artikel</span>
             </a>
           </div>
@@ -1822,7 +1832,7 @@
           
             <div class="site-state-item site-state-tags">
               <a href="/tags">
-                <span class="site-state-item-count">7</span>
+                <span class="site-state-item-count">8</span>
                 <span class="site-state-item-name">Tags</span>
               </a>
             </div>

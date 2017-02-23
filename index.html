@@ -314,7 +314,16 @@
       
         
           
-          
+          浏览器的同源策略和跨域方法同源策略简介
+A网页设置的Cookie，B网页不能打开，除非这两个页面同源
+
+所谓同源是指三个相同：
+
+协议相同
+域名相同
+端口相同
+
+http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -437,7 +446,8 @@
       
         
           
-          
+          数据结构 - 二叉树的创建、遍历、查找和删除实现二叉查找树二叉查找树由节点组成，所以我们要定义的第一个对象就是Node:
+1234567891011121314/* * @节点有data，左子节点，右子节点三个属性 * @以及一个show方法来输出节点的值 */class Node&#123;  c
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -560,7 +570,9 @@
       
         
           
-          
+          Javascript的“强类型数组”引言对于Javascript中的数组，大家可能会马上想到：
+12345let arr = [46,456,465,798];let arr2 = new Array()arr2[0] = 46arr2[1] = 456 ...
+很方便的我们就创建了arr，arr2
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -683,7 +695,15 @@
       
         
           
-          
+          ［译］驯服ES7的异步野兽 - async
+
+
+原文链接： Taming the asynchronous beast with ES7
+作者： Nolan Lawson
+译者： ant
+
+
+在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -806,7 +826,10 @@
       
         
           
-          
+          二分查找
+对有序的数据进行二分查找比顺序查找更高效。
+
+例子简单例子我们有1-100个数据：1 25 50 75 82 100想要在其中找到数字82，进行二分查找51 75 82 100第一次mid”索引”为(0 + 100) / 2 = 50(Math.floor)，返回太小，因此下限变为mid 
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -929,7 +952,8 @@
       
         
           
-          
+          模拟数组介绍在学习算法之前，我们事先定义好一个测试用的数组并添加了一些常规数组操作的函数。插入数组数据，删除数组数据，显示数组数据，交换数组元素等等。
+实现12345678910111213141516171819202122232425262728293031323334353637383940c
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -1052,7 +1076,8 @@
       
         
           
-          
+          关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
+12345$.getJSON('http://example/ajax', function(err, data) &#123;  if(err) throw err  console.log('等
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -1175,7 +1200,11 @@
       
         
           
-          
+          关于import export
+ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。
+
+假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？
+传统的CommonJ
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -1298,7 +1327,11 @@
       
         
           
-          
+          let, constlet
+声明带有块级作用域的变量
+
+12345for(var i=0; i&lt;5; i++) &#123;  setTimeout(function()&#123;    console.log(i)    //5 5 5 5 5   &#125;, 2000)&#125;
+
           ...
           <!--noindex-->
           <div class="post-more-link text-center">
@@ -1421,7 +1454,10 @@
       
         
           
-          
+          let and constlet
+原来的javascript中没有块级作用域，只有函数级作用域。在es6中，使用let声明的变量具有块级作用域。
+
+1234567891011121314if(true) &#123;  //  if不是函数，没有块级作用域  var nico = 'nico'  c
           ...
           <!--noindex-->
           <div class="post-more-link text-center">

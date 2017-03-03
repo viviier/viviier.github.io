@@ -1680,7 +1680,7 @@ pre .javascript .function {
   width: 4px;
   height: 4px;
   border-radius: 50%;
-  background: #5ea487;
+  background: #9c3e2e;
 }
 .links-of-blogroll {
   font-size: 13px;
@@ -2494,7 +2494,7 @@ embed {
 .site-author-image {
   border-radius: 100%;
   padding: 2px;
-  border: 2px solid #fff;
+  border: 2px solid #000;
   animation: cycle 2s 0.5s forwards;
   transition: border-radius 2s;
 }

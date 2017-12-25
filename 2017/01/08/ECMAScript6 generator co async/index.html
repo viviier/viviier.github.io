@@ -84,22 +84,18 @@
 
 
 
-<meta name="description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
-12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
-而同步的IO操作则需要">
+<meta name="description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。 12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;) 而同步的IO操作则需要">
+<meta name="keywords" content="ecmascript 6">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ECMAScript6 generator co async">
 <meta property="og:url" content="http://yoursite.com/2017/01/08/ECMAScript6 generator co async/index.html">
 <meta property="og:site_name" content="viviier">
-<meta property="og:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
-12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
-而同步的IO操作则需要">
+<meta property="og:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。 12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;) 而同步的IO操作则需要">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-01-08T15:47:25.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ECMAScript6 generator co async">
-<meta name="twitter:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。
-12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;)
-而同步的IO操作则需要">
+<meta name="twitter:description" content="关于异步在执行IO操作时，javascript代码无需等待，而是传入回调函数后，继续执行后续的代码。 12345$.getJSON(&apos;http://example/ajax&apos;, function(err, data) &amp;#123;  if(err) throw err  console.log(&apos;等待结果返回&apos;)&amp;#125;)console.log(&apos;不等待结果返回执行&apos;) 而同步的IO操作则需要">
 
 
 
@@ -374,7 +370,7 @@
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">getStockPriceByName(<span class="string">'goog'</span>).then(<span class="function"><span class="keyword">function</span> (<span class="params">result</span>)</span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(result);</div><div class="line">&#125;);</div></pre></td></tr></table></figure>
 <p>另外要注意的是，await命令后面的promise对象，运行结果可能是rejected，所以最好把await命令放在try…catch代码块中。</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">try</span> &#123;</div><div class="line">    <span class="keyword">await</span> sonethingPromise()</div><div class="line">  &#125; <span class="keyword">catch</span> (err) &#123;</div><div class="line">    <span class="built_in">console</span>.log(err)</div><div class="line">  &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="comment">// 另一种写法</span></div><div class="line"></div><div class="line"><span class="keyword">async</span> <span class="function"><span class="keyword">function</span> <span class="title">myFunction</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  <span class="keyword">await</span> sonethingPromise().catch(<span class="function"><span class="keyword">function</span> (<span class="params">err</span>)</span>&#123;</div><div class="line">    <span class="built_in">console</span>.log(err)</div><div class="line">  &#125;)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>如果希望多个请求并发执行，可以使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="external">Promise.all</a>方法</p>
+<p>如果希望多个请求并发执行，可以使用<a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="noopener">Promise.all</a>方法</p>
 
       
     </div>

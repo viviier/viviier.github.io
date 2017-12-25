@@ -84,28 +84,18 @@
 
 
 
-<meta name="description" content="关于import export
-ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。
-
-假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？
-传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
+<meta name="description" content="关于import export ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。  假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？ 传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
+<meta name="keywords" content="ecmascript 6">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ECMAScript6 import extends">
 <meta property="og:url" content="http://yoursite.com/2017/01/06/ECMAScript6 import extends/index.html">
 <meta property="og:site_name" content="viviier">
-<meta property="og:description" content="关于import export
-ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。
-
-假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？
-传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
+<meta property="og:description" content="关于import export ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。  假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？ 传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-01-06T14:39:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ECMAScript6 import extends">
-<meta name="twitter:description" content="关于import export
-ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。
-
-假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？
-传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
+<meta name="twitter:description" content="关于import export ES6模块的设计思想，是尽量的静态化，使得编译时就能确定模块的依赖关系，以及输入和输出的变量。  假设我们有两个js文件：index.js和content.js，现在我们想要在index.js中使用content.js返回的结果，我们要怎么做呢？ 传统的CommonJS写法12345// index.jslet animal = require(&apos;./content">
 
 
 
@@ -355,7 +345,7 @@ ES6模块的设计思想，是尽量的静态化，使得编译时就能确定�
 </blockquote>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// index.js  这里的animal还是指代默认输出的接口</span></div><div class="line"><span class="keyword">import</span> animal, * <span class="keyword">as</span> content <span class="keyword">from</span> <span class="string">'./content'</span></div><div class="line"></div><div class="line"><span class="keyword">let</span> says = content.say()</div><div class="line"><span class="built_in">console</span>.log(<span class="string">`hello <span class="subst">$&#123;content.type&#125;</span> says <span class="subst">$&#123;says&#125;</span> to <span class="subst">$&#123;animal&#125;</span>`</span>)  <span class="comment">// hello dog says Hello to A cat</span></div></pre></td></tr></table></figure>
 <p>通常星号<code>*</code>结合<code>as</code>一起使用比较合适</p>
-<h4 id="Tree-shaking"><a href="#Tree-shaking" class="headerlink" title="Tree-shaking"></a>Tree-shaking</h4><p>打包时忽略没有使用到的变量，我们可以使用<a href="http://rollupjs.org/" target="_blank" rel="external">rollup.js</a></p>
+<h4 id="Tree-shaking"><a href="#Tree-shaking" class="headerlink" title="Tree-shaking"></a>Tree-shaking</h4><p>打包时忽略没有使用到的变量，我们可以使用<a href="http://rollupjs.org/" target="_blank" rel="noopener">rollup.js</a></p>
 
       
     </div>

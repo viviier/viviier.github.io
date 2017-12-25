@@ -84,41 +84,19 @@
 
 
 
-<meta name="description" content="［译］驯服ES7的异步野兽 - async
-
-
-原文链接： Taming the asynchronous beast with ES7
-作者： Nolan Lawson
-译者： ant
-
-
-在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
+<meta name="description" content="［译］驯服ES7的异步野兽 - async   原文链接： Taming the asynchronous beast with ES7 作者： Nolan Lawson 译者： ant   在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
+<meta name="keywords" content="译">
 <meta property="og:type" content="article">
 <meta property="og:title" content="［译］驯服ES7的异步野兽 - async">
 <meta property="og:url" content="http://yoursite.com/2017/02/07/[译]驯服ES7的异步野兽 - async/index.html">
 <meta property="og:site_name" content="viviier">
-<meta property="og:description" content="［译］驯服ES7的异步野兽 - async
-
-
-原文链接： Taming the asynchronous beast with ES7
-作者： Nolan Lawson
-译者： ant
-
-
-在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
+<meta property="og:description" content="［译］驯服ES7的异步野兽 - async   原文链接： Taming the asynchronous beast with ES7 作者： Nolan Lawson 译者： ant   在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https://pouchdb.com/static/img/pepperidge_farm_remembers.png">
 <meta property="og:updated_time" content="2017-02-06T17:32:40.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="［译］驯服ES7的异步野兽 - async">
-<meta name="twitter:description" content="［译］驯服ES7的异步野兽 - async
-
-
-原文链接： Taming the asynchronous beast with ES7
-作者： Nolan Lawson
-译者： ant
-
-
-在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
+<meta name="twitter:description" content="［译］驯服ES7的异步野兽 - async   原文链接： Taming the asynchronous beast with ES7 作者： Nolan Lawson 译者： ant   在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解">
 <meta name="twitter:image" content="https://pouchdb.com/static/img/pepperidge_farm_remembers.png">
 
 
@@ -350,9 +328,9 @@
         <p>［译］驯服ES7的异步野兽 - async</p>
 <blockquote>
 <ul>
-<li>原文链接： <a href="https://pouchdb.com/2015/03/05/taming-the-async-beast-with-es7.html" target="_blank" rel="external">Taming the asynchronous beast with ES7</a></li>
-<li>作者： <a href="https://twitter.com/nolanlawson" target="_blank" rel="external">Nolan Lawson</a></li>
-<li>译者： <a href="http://www.viviier.com" target="_blank" rel="external">ant</a></li>
+<li>原文链接： <a href="https://pouchdb.com/2015/03/05/taming-the-async-beast-with-es7.html" target="_blank" rel="noopener">Taming the asynchronous beast with ES7</a></li>
+<li>作者： <a href="https://twitter.com/nolanlawson" target="_blank" rel="noopener">Nolan Lawson</a></li>
+<li>译者： <a href="http://www.viviier.com" target="_blank" rel="noopener">ant</a></li>
 </ul>
 </blockquote>
 <p>在PouchDB里面最棘手的一个问题是它的异步API。我在Stack Overflow，Github和IRC上看见过很多关于此类的问题和困惑，并且关于callbacks和promises几乎也有很多人经常误解。</p>
@@ -419,7 +397,7 @@
 <h3 id="注意事项"><a href="#注意事项" class="headerlink" title="注意事项"></a>注意事项</h3><p>ES7仍然很流行。但Node.js和io.js还不支持Async函数，你需要去加载一些实验性的插件才能让Babel编译它。就目前来说，async/await规范仍然处于“提案”状态。</p>
 <p>对此，你需要一些ES6的代码转换工具包括Regenerator和ES6的编译工具使得代码能够工作在ES5的浏览器上。对于我来说，这些工具加起来差不多60KB，代码压缩和gzipped。然而对于大多数开发者来说，这些工具太多，水很深。</p>
 <p>但是这些新的工具使用起来非常有趣，使用它们时工作就像是用颜料涂满画卷，而且关于异步的库也让我仿佛看到了ES7美好的未来。</p>
-<p>所以，如果你也想玩一下，你可以点击进入我写的一个小的<a href="https://github.com/nolanlawson/async-functions-in-pouchdb" target="_blank" rel="external">demo库</a>。开始运行它，只需要解压代码，然后运行<code>npm install &amp;&amp; npm run build</code>。你也可以去了解更多关于ES7的内容，或是去观看Jafar Husain在youtube上的<a href="https://www.youtube.com/watch?v=DqMFX91ToLw" target="_blank" rel="external">演讲</a>。</p>
+<p>所以，如果你也想玩一下，你可以点击进入我写的一个小的<a href="https://github.com/nolanlawson/async-functions-in-pouchdb" target="_blank" rel="noopener">demo库</a>。开始运行它，只需要解压代码，然后运行<code>npm install &amp;&amp; npm run build</code>。你也可以去了解更多关于ES7的内容，或是去观看Jafar Husain在youtube上的<a href="https://www.youtube.com/watch?v=DqMFX91ToLw" target="_blank" rel="noopener">演讲</a>。</p>
 <h3 id="结论"><a href="#结论" class="headerlink" title="结论"></a>结论</h3><p>异步函数在ES7里是一个新的概念，它们让之前不在异步中使用的<code>return</code>和<code>try/catch</code>回归，并且鼓励我们用同步的代码来书写异步，虽然看起来像老旧的代码，但是它拥有着更高的性能。</p>
 <p>更重药的是，异步函数使得像PouchDB这样的API更容易工作。所以希望这将能改变少量用户错误和混乱的代码，并且让我们能写出更具优雅性和可读性的代码。</p>
 <p>而且谁也不知道，也许人们最后将会放弃LocalStorage，并选择相对来说更现代的客户端数据库。</p>

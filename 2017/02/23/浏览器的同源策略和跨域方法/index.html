@@ -84,49 +84,18 @@
 
 
 
-<meta name="description" content="浏览器的同源策略和跨域方法同源策略简介
-A网页设置的Cookie，B网页不能打开，除非这两个页面同源
-
-所谓同源是指三个相同：
-
-协议相同
-域名相同
-端口相同
-
-http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:
-
-http://www.example.com/di">
+<meta name="description" content="浏览器的同源策略和跨域方法同源策略简介 A网页设置的Cookie，B网页不能打开，除非这两个页面同源  所谓同源是指三个相同：  协议相同 域名相同 端口相同  http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:  http://www.example.com/di">
+<meta name="keywords" content="javascript">
 <meta property="og:type" content="article">
 <meta property="og:title" content="浏览器的同源策略和跨域方法">
 <meta property="og:url" content="http://yoursite.com/2017/02/23/浏览器的同源策略和跨域方法/index.html">
 <meta property="og:site_name" content="viviier">
-<meta property="og:description" content="浏览器的同源策略和跨域方法同源策略简介
-A网页设置的Cookie，B网页不能打开，除非这两个页面同源
-
-所谓同源是指三个相同：
-
-协议相同
-域名相同
-端口相同
-
-http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:
-
-http://www.example.com/di">
+<meta property="og:description" content="浏览器的同源策略和跨域方法同源策略简介 A网页设置的Cookie，B网页不能打开，除非这两个页面同源  所谓同源是指三个相同：  协议相同 域名相同 端口相同  http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:  http://www.example.com/di">
+<meta property="og:locale" content="zh-Hans">
 <meta property="og:updated_time" content="2017-02-23T06:13:36.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="浏览器的同源策略和跨域方法">
-<meta name="twitter:description" content="浏览器的同源策略和跨域方法同源策略简介
-A网页设置的Cookie，B网页不能打开，除非这两个页面同源
-
-所谓同源是指三个相同：
-
-协议相同
-域名相同
-端口相同
-
-http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:
-
-http://www.example.com/di">
+<meta name="twitter:description" content="浏览器的同源策略和跨域方法同源策略简介 A网页设置的Cookie，B网页不能打开，除非这两个页面同源  所谓同源是指三个相同：  协议相同 域名相同 端口相同  http://www.example.com/dir/page.html协议(http://) 域名(www.example.com) 端口(80，默认可省略)这个地址的同源情况如下:  http://www.example.com/di">
 
 
 
@@ -363,12 +332,12 @@ http://www.example.com/di">
 <li>域名相同</li>
 <li>端口相同</li>
 </ul>
-<p><pre><a href="http://www.example.com/dir/page.html" target="_blank" rel="external">http://www.example.com/dir/page.html</a><br>协议(http://) 域名(www.example.com) 端口(80，默认可省略)</pre><br>这个地址的同源情况如下:</p>
+<p><pre><a href="http://www.example.com/dir/page.html" target="_blank" rel="noopener">http://www.example.com/dir/page.html</a><br>协议(http://) 域名(www.example.com) 端口(80，默认可省略)</pre><br>这个地址的同源情况如下:</p>
 <ul>
-<li><a href="http://www.example.com/dir2/other.html" target="_blank" rel="external">http://www.example.com/dir2/other.html</a>  同源</li>
-<li><a href="http://example.com/dir/other.html" target="_blank" rel="external">http://example.com/dir/other.html</a>  不同源（域名不同）</li>
-<li><a href="http://v2.www.example.com/dir/other.html" target="_blank" rel="external">http://v2.www.example.com/dir/other.html</a>  不同源（域名不同）</li>
-<li><a href="http://www.example.com:81/dir/other.html" target="_blank" rel="external">http://www.example.com:81/dir/other.html</a>  不同源（端口不同）</li>
+<li><a href="http://www.example.com/dir2/other.html" target="_blank" rel="noopener">http://www.example.com/dir2/other.html</a>  同源</li>
+<li><a href="http://example.com/dir/other.html" target="_blank" rel="noopener">http://example.com/dir/other.html</a>  不同源（域名不同）</li>
+<li><a href="http://v2.www.example.com/dir/other.html" target="_blank" rel="noopener">http://v2.www.example.com/dir/other.html</a>  不同源（域名不同）</li>
+<li><a href="http://www.example.com:81/dir/other.html" target="_blank" rel="noopener">http://www.example.com:81/dir/other.html</a>  不同源（端口不同）</li>
 </ul>
 <p>同源策略的目的，是为了保护用户的信息安全，防止恶意的网站窃取数据。如果非同源，会受到三种行为限制：</p>
 <ul>
@@ -396,17 +365,17 @@ http://www.example.com/di">
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">addScript</span>(<span class="params">src</span>) </span>&#123;</div><div class="line">  <span class="keyword">let</span> script = <span class="built_in">document</span>.createElement(<span class="string">'script'</span>)</div><div class="line">  script.setAttribute(<span class="string">'type'</span>, <span class="string">'text/javascript'</span>)</div><div class="line">  script.src = src</div><div class="line">  <span class="built_in">document</span>.body.appendChild(script)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="built_in">window</span>.onload = <span class="function"><span class="keyword">function</span>(<span class="params"></span>)</span>&#123;</div><div class="line">  addScript(<span class="string">'http://abc.com/ip?callback=foo'</span>)</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params">data</span>) </span>&#123;</div><div class="line">  <span class="built_in">console</span>.log(data.ip)</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>服务器端可以这样写：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">&lt;?php  </div><div class="line">  </div><div class="line"><span class="comment">//服务端返回JSON数据  </span></div><div class="line">$arr=array(<span class="string">'ip'</span>=&gt;<span class="number">1</span>,<span class="string">'b'</span>=&gt;<span class="number">2</span>,<span class="string">'c'</span>=&gt;<span class="number">3</span>,<span class="string">'d'</span>=&gt;<span class="number">4</span>,<span class="string">'e'</span>=&gt;<span class="number">5</span>);  </div><div class="line">$result=json_encode((object)$arr);   </div><div class="line"><span class="comment">//动态执行回调函数  </span></div><div class="line">$callback=$_GET[<span class="string">'callback'</span>];  </div><div class="line">echo $callback.<span class="string">"($result)"</span>;</div></pre></td></tr></table></figure>
-<p>上面代码通过动态添加<code>script</code>元素，向服务器<code><a href="http://abc.com" target="_blank" rel="external">http://abc.com</a></code>发出请求，在请求的查询字符串中用callback来指定约定好的回调函数处理名字，服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。由于<code>script</code>元素请求的脚本直接作为代码运行，只要浏览器定义了foo函数，该函数就会立即调用。作为参数的JSON数据被视为JavaScript对象，而不是字符串，因此避免了使用<code>JSON.parse</code>的步骤。</p>
+<p>上面代码通过动态添加<code>script</code>元素，向服务器<code><a href="http://abc.com" target="_blank" rel="noopener">http://abc.com</a></code>发出请求，在请求的查询字符串中用callback来指定约定好的回调函数处理名字，服务器收到这个请求以后，会将数据放在回调函数的参数位置返回。由于<code>script</code>元素请求的脚本直接作为代码运行，只要浏览器定义了foo函数，该函数就会立即调用。作为参数的JSON数据被视为JavaScript对象，而不是字符串，因此避免了使用<code>JSON.parse</code>的步骤。</p>
 <h3 id="WebSocket"><a href="#WebSocket" class="headerlink" title="WebSocket"></a>WebSocket</h3><p>WebSocket是一种通信协议，该协议不实行同源策略，只要服务器支持，就可以通过它进行跨域通信。</p>
 <p>WebSocket的请求头信息如下：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">GET /chat HTTP/<span class="number">1.1</span></div><div class="line">Host: server.example.com</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Key: x3JJHMbDL1EzLkh9GBhXDw==</div><div class="line">Sec-WebSocket-Protocol: chat, superchat</div><div class="line">Sec-WebSocket-Version: <span class="number">13</span></div><div class="line">Origin: http:<span class="comment">//example.com</span></div></pre></td></tr></table></figure>
 <p>上面代码中的<code>Origin</code>表示该请求的请求源，即发自哪个域名。服务器可以根据<code>Origin</code>判断是否许可本次通信，如果该域名在白名单内，就可以做出如下回应：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">HTTP/<span class="number">1.1</span> <span class="number">101</span> Switching Protocols</div><div class="line">Upgrade: websocket</div><div class="line">Connection: Upgrade</div><div class="line">Sec-WebSocket-Accept: HSmrc0sMlYUkAGmm5OPpG2HaGWk=</div><div class="line">Sec-WebSocket-Protocol: chat</div></pre></td></tr></table></figure>
 <h3 id="CORS"><a href="#CORS" class="headerlink" title="CORS"></a>CORS</h3><p>CORS允许浏览器向跨源服务器发出<code>XMLHttpRequest</code>请求，需要浏览器和服务器同时支持。实现这个功能只需由服务器发送一个响应标头即可。</p>
-<p>假设我们页面或者应用已在<code><a href="http://www.test1.com" target="_blank" rel="external">http://www.test1.com</a></code>上了，而我们打算从 <code><a href="http://www.test2.com" target="_blank" rel="external">http://www.test2.com</a></code>请求提取数据。一般情况下，如果我们直接使用 AJAX 来请求将会失败，浏览器也会返回“源不匹配”的错误，”跨域”也就以此由来。利用CORS<code><a href="http://www.test2.com" target="_blank" rel="external">http://www.test2.com</a></code>只需添加一个标头，就可以允许来自<code><a href="http://www.test1.com" target="_blank" rel="external">http://www.test1.com</a></code>的请求。</p>
+<p>假设我们页面或者应用已在<code><a href="http://www.test1.com" target="_blank" rel="noopener">http://www.test1.com</a></code>上了，而我们打算从 <code><a href="http://www.test2.com" target="_blank" rel="noopener">http://www.test2.com</a></code>请求提取数据。一般情况下，如果我们直接使用 AJAX 来请求将会失败，浏览器也会返回“源不匹配”的错误，”跨域”也就以此由来。利用CORS<code><a href="http://www.test2.com" target="_blank" rel="noopener">http://www.test2.com</a></code>只需添加一个标头，就可以允许来自<code><a href="http://www.test1.com" target="_blank" rel="noopener">http://www.test1.com</a></code>的请求。</p>
 <p>下面是PHP中的hander() 设置，“*”号表示允许任何域向我们的服务端提交请求：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">header(<span class="string">'Access-Control-Allow-Origin: *'</span>)</div></pre></td></tr></table></figure>
-<p>也可以设置指定的域名，如域名<code><a href="http://www.test2.com" target="_blank" rel="external">http://www.test2.com</a></code>，那么就允许来自这个域名的请求：</p>
+<p>也可以设置指定的域名，如域名<code><a href="http://www.test2.com" target="_blank" rel="noopener">http://www.test2.com</a></code>，那么就允许来自这个域名的请求：</p>
 <figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">header(<span class="string">'Access-Control-Allow-Origin: http://www.test2.com'</span>)</div></pre></td></tr></table></figure>
 <p>当前我设置的header为“*”，任意一个请求过来之后服务端我们都可以进行响应和处理。</p>
 <p>另外CORS请求默认不发送Cookie和HTTP认证信息。如果要把Cookie发到服务器，一方面要服务器同意，指定<code>Access-Control-Allow-Credentials</code>为true。</p>
@@ -416,9 +385,9 @@ http://www.example.com/di">
 <p>需要注意的是，如果要发送Cookie，Access-Control-Allow-Origin就不能设为星号，必须指定明确的、与请求网页一致的域名。同时，Cookie依然遵循同源政策，只有用服务器域名设置的Cookie才会上传，其他域名的Cookie并不会上传，且（跨源）原网页代码中的document.cookie也无法读取服务器域名下的Cookie。</p>
 <p>相比JSONP，CORS更加强大，它支持所有类型的HTTP请求，而JSONP只支持GET。JSONP的优势在于支持老式浏览器，以及可以向不支持CORS的网站请求数据。</p>
 <h2 id="附录"><a href="#附录" class="headerlink" title="附录"></a>附录</h2><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><ul>
-<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="external">阮一峰 - 浏览器同源政策及其规避方法</a></li>
-<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="external">阮一峰 - 跨域资源共享 CORS 详解</a></li>
-<li><a href="http://www.cnblogs.com/Darren_code/p/cors.html" target="_blank" rel="external">聂微东 - AJAX POST&amp;跨域 解决方案 - CORS</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/same-origin-policy.html" target="_blank" rel="noopener">阮一峰 - 浏览器同源政策及其规避方法</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2016/04/cors.html" target="_blank" rel="noopener">阮一峰 - 跨域资源共享 CORS 详解</a></li>
+<li><a href="http://www.cnblogs.com/Darren_code/p/cors.html" target="_blank" rel="noopener">聂微东 - AJAX POST&amp;跨域 解决方案 - CORS</a></li>
 </ul>
 
       

@@ -1,0 +1,752 @@
+<!doctype html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="javascript," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.0" />
+
+
+
+
+
+
+<meta name="description" content="当主线程的execution context stack空了，就会去读取task queue，如果task queue有task，那么就会通过event loop把task推进heap stack，这个过程会不断重复。这个javascrit的事件循环机制，就叫event looop。 javacript单线程javascript是单线程的。javascript的主要用途是与用户互动、操作DOM，为">
+<meta name="keywords" content="javascript">
+<meta property="og:type" content="article">
+<meta property="og:title" content="event-loop">
+<meta property="og:url" content="http://yoursite.com/2018/05/03/event-loop/index.html">
+<meta property="og:site_name" content="viviier">
+<meta property="og:description" content="当主线程的execution context stack空了，就会去读取task queue，如果task queue有task，那么就会通过event loop把task推进heap stack，这个过程会不断重复。这个javascrit的事件循环机制，就叫event looop。 javacript单线程javascript是单线程的。javascript的主要用途是与用户互动、操作DOM，为">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/event%20loop.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022301.jpg">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2014100803.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022304.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022303.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022302.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022303.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022305.jpg">
+<meta property="og:updated_time" content="2018-05-02T18:20:23.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="event-loop">
+<meta name="twitter:description" content="当主线程的execution context stack空了，就会去读取task queue，如果task queue有task，那么就会通过event loop把task推进heap stack，这个过程会不断重复。这个javascrit的事件循环机制，就叫event looop。 javacript单线程javascript是单线程的。javascript的主要用途是与用户互动、操作DOM，为">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/event%20loop.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    sidebar: {"position":"left","display":"post"},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/03/event-loop/"/>
+
+
+
+
+
+  <title> event-loop | viviier </title>
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+  
+    
+  
+
+  <div class="container one-collumn sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-meta ">
+  
+
+  <div class="custom-logo-site-title">
+    <a href="/"  class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <span class="site-title">viviier</span>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+  <p class="site-subtitle"></p>
+</div>
+
+<div class="site-nav-toggle">
+  <button>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+    <span class="btn-bar"></span>
+  </button>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/03/event-loop/">
+
+  <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <meta itemprop="name" content="viviier">
+    <meta itemprop="description" content="">
+    <meta itemprop="image" content="http://okuesjok0.bkt.clouddn.com/109951162857314804.jpeg">
+  </span>
+
+  <span style="display:none" itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+    <meta itemprop="name" content="viviier">
+    <span style="display:none" itemprop="logo" itemscope itemtype="http://schema.org/ImageObject">
+      <img style="display:none;" itemprop="url image" alt="viviier" src="">
+    </span>
+  </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+            
+            
+              
+                event-loop
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-03T02:18:52+08:00">
+                2018-05-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+
+          
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>当主线程的execution context stack空了，就会去读取task queue，如果task queue有task，那么就会通过event loop把task推进heap stack，这个过程会不断重复。这个javascrit的事件循环机制，就叫event looop。</p>
+<h3 id="javacript单线程"><a href="#javacript单线程" class="headerlink" title="javacript单线程"></a>javacript单线程</h3><p>javascript是单线程的。javascript的主要用途是与用户互动、操作DOM，为了避免复杂性和一些不必要的问题，所以是从一诞生，javascript就是单线程。如果有两个线程，那么一个线程在某个DOM上添加内容，而另一个线程删掉了这个DOM，那么浏览器就不知道以哪个线程为准了。</p>
+<h3 id="同步和异步"><a href="#同步和异步" class="headerlink" title="同步和异步"></a>同步和异步</h3><p>同步任务是指在主线程的execution context stack执行的task，排队执行，只有当前一个task执行完毕，才能执行后一个任务。异步任务是指在task queue里的任务，当execution context stack空时，会通过event loop把task queue的任务push到execution context stack。<br>而异步任务有了运行结果后，一般会被push到task queue，一旦ecs（execution context stack）中的所有的task执行完毕，system就会通过event loop读取task queue，然后把task放入ecs开始执行。</p>
+<h4 id="task-quque里有什么"><a href="#task-quque里有什么" class="headerlink" title="task quque里有什么"></a>task quque里有什么</h4><p>task queue一般用来存放timers、i/o、callback（包含eventlistener）。这里仅指javascript，node的task queue在后面。</p>
+<h3 id="关于event-loop"><a href="#关于event-loop" class="headerlink" title="关于event loop"></a>关于event loop</h3><p>主线程从”任务队列”中读取事件，这个过程是循环不断的，所以整个的这种运行机制又称为Event Loop（事件循环）。</p>
+<p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/event%20loop.png" alt="event-loop"></p>
+<h4 id="browser-javascript中的event-loop"><a href="#browser-javascript中的event-loop" class="headerlink" title="browser javascript中的event loop"></a>browser javascript中的event loop</h4><p>browser javascript中的event loop一般用来触发callback、ajax、timers等等异步任务，而timers中主要是setTimeout。setTimeout会把事件添加到task quque的尾部，要等到ecs和tq（task queue）现有的事件都处理完才会执行。setTimeout(fn, 0)可以指定某个任务在ecs为空后立即执行指定的callback。</p>
+<h3 id="Node-js的Event-loop"><a href="#Node-js的Event-loop" class="headerlink" title="Node.js的Event loop"></a>Node.js的Event loop</h3><h4 id="关于Node-js如何解析js代码"><a href="#关于Node-js如何解析js代码" class="headerlink" title="关于Node.js如何解析js代码"></a>关于Node.js如何解析js代码</h4><p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022301.jpg" alt="nodejs-event-loop-a"></p>
+<p>首先通过用户键入node的javascript代码，然后v8开始解析（是否解析为c++代码？），解析之后调用node的api返回执行结果给v8，v8再将结果返回给用户。</p>
+<h4 id="Node的event-loop"><a href="#Node的event-loop" class="headerlink" title="Node的event loop"></a>Node的event loop</h4><p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2014100803.png" alt="nodejs-event-loop-b"></p>
+<p>v8在解析的时候，有一个<code>libuv</code>库负责node api的执行。它将不同的task分配给相对应的工作流（event queue || worker threads || …），形成一个event loop，以异步的方式将任务的执行结果返还给v8引擎。</p>
+<h5 id="定时器"><a href="#定时器" class="headerlink" title="定时器"></a>定时器</h5><p>node在语言标准上新增了两个’定时器’，<code>process.nexttick</code> 和 <code>setImmediate</code>。</p>
+<blockquote>
+<p>小测试</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// test.js</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</div><div class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</div><div class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</div><div class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</div><div class="line"><span class="function">(<span class="params">(</span>) =&gt;</span> <span class="built_in">console</span>.log(<span class="number">5</span>))();</div></pre></td></tr></table></figure>
+<p><code>process.nexttick</code> 是将事件放入<code>本轮循环</code>的<code>nextTickQueue</code>中<br><code>setImmediate</code> 是将事件放入<code>次轮循环</code>的task queue队尾<br>两个最大的不同是，<code>process.nexttick</code>无论有多少个都是将事件放入<code>本轮循环</code>通过当前event loop一次执行完，而多个setImmediate则需要多次loop才能执行完。所以前者要比后者发生的早，执行效率也高（不用检查task queue）。<br>but，如果像这样：<br><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">process.nextTick(<span class="function"><span class="keyword">function</span> <span class="title">foo</span>(<span class="params"></span>) </span>&#123;</div><div class="line">  process.nextTick(foo);</div><div class="line">&#125;);</div></pre></td></tr></table></figure></p>
+<p>那么execution context stack根本不会去读取task queue，因为他一直在重复读取当前的<code>nextTickQueue</code>，递归的process.nexttick，Node.js会警告你改成setImmediate。</p>
+<h4 id="同步和异步-1"><a href="#同步和异步-1" class="headerlink" title="同步和异步"></a>同步和异步</h4><p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022304.png" alt="nodejs-event-loop-d"></p>
+<h4 id="本轮循环、次轮循环"><a href="#本轮循环、次轮循环" class="headerlink" title="本轮循环、次轮循环"></a>本轮循环、次轮循环</h4><p>在Node中，异步任务分两种。</p>
+<ul>
+<li>追加在<code>本轮循环</code>的异步任务</li>
+<li>追加在<code>次轮循环</code>的异步任务</li>
+</ul>
+<p><code>process.nexttick</code> 和 <code>Promise</code> 的回调函数，追加在<code>本轮循环</code>，即node的ecs一旦执行完成，就开始执行他们。</p>
+<p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022303.png" alt="nodejs-event-loop-d"></p>
+<p><code>setTimeout</code> 、 <code>setInterval</code> 、 <code>setImmediate</code> 的回调函数，追加在<code>次轮循环</code>。</p>
+<blockquote>
+<p>所以上面<code>小测试</code>代码执行顺序为：</p>
+</blockquote>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// 下面两行，次轮循环执行</span></div><div class="line">setTimeout(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">1</span>));</div><div class="line">setImmediate(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">2</span>));</div><div class="line"><span class="comment">// 下面两行，本轮循环执行</span></div><div class="line">process.nextTick(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">3</span>));</div><div class="line"><span class="built_in">Promise</span>.resolve().then(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">4</span>));</div><div class="line"><span class="comment">// 同步任务</span></div><div class="line">(<span class="function"><span class="params">()</span> =&gt;</span> <span class="built_in">console</span>.log(<span class="number">5</span>))();</div><div class="line"></div><div class="line"><span class="comment">// 也是根据代码的顺序来的</span></div><div class="line"><span class="number">5</span></div><div class="line"><span class="number">3</span></div><div class="line"><span class="number">4</span></div><div class="line"><span class="number">1</span></div><div class="line"><span class="number">2</span></div></pre></td></tr></table></figure>
+<h4 id="process-nextTick（nextTickQueue）"><a href="#process-nextTick（nextTickQueue）" class="headerlink" title="process.nextTick（nextTickQueue）"></a>process.nextTick（nextTickQueue）</h4><p>node执行完所有的同步任务，接下来就会执行<code>process.nextTick</code>队列。如果你希望异步任务尽快的执行，就使用<code>process.nextTick</code>。</p>
+<p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022302.png" alt="nodejs-event-loop-e"></p>
+<h4 id="Promise（microTaskQueue）"><a href="#Promise（microTaskQueue）" class="headerlink" title="Promise（microTaskQueue）"></a>Promise（microTaskQueue）</h4><p>Promise对象的回调函数，会进入<code>异步任务</code>的<code>微任务（microTask）</code>队列。微任务队列追加在<code>nextTickQueue</code>后面，也属于本轮循环。</p>
+<p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022303.png" alt="nodejs-event-loop-f"></p>
+<p>只有前一个队列全部清空以后，才会执行下一个队列。<br>所以<code>本轮循环</code>的执行顺序就是：</p>
+<ul>
+<li>同步任务</li>
+<li>process.nextTick（nextTickQueue）</li>
+<li>Promise（microTaskQueue）</li>
+</ul>
+<h4 id="事件循环的概念"><a href="#事件循环的概念" class="headerlink" title="事件循环的概念"></a>事件循环的概念</h4><p>Node.js只有一个主线程，事件循环是在主线程上完成的。</p>
+<blockquote>
+<p>“When Node.js starts, it initializes the event loop, processes the provided input script which may make async API calls, schedule timers, or call process.nextTick(), then begins processing the event loop.”</p>
+</blockquote>
+<p>Node在开始执行脚本时，会先进行event loop的初始化，但是这是event loop还没开始，会先完成下面的事情👇：</p>
+<ul>
+<li>同步任务</li>
+<li>发起异步请求</li>
+<li>规划定时器生效时间</li>
+<li>执行process.nextTick等等</li>
+</ul>
+<p>上面的这些事情执行完了，event loop就正式开始了。</p>
+<h5 id="六个阶段"><a href="#六个阶段" class="headerlink" title="六个阶段"></a>六个阶段</h5><p>事件循环会无限次的执行，一轮又一轮。只有异步任务的回调函数队列清空了，才会停止执行。每一轮的事件循环，分成六个阶段：</p>
+<ul>
+<li>timers</li>
+<li>I/O callbacks</li>
+<li>idle，prepare</li>
+<li>poll</li>
+<li>check</li>
+<li>close callbakcs</li>
+</ul>
+<p>每个阶段都有一个先进先出的回调函数队列。只有一个阶段的回调函数队列清空了，该执行的回调函数都执行了，事件循环才会进入下一个阶段。</p>
+<p><img src="https://raw.githubusercontent.com/viviier/study-demo/master/hhhhhexo/event-loop/bg2018022305.jpg" alt="nodejs-event-loop-f"></p>
+<h6 id="timers"><a href="#timers" class="headerlink" title="timers"></a>timers</h6><p>定时器阶段，处理<code>setTimeout</code> 和 <code>setInterval</code>的回调函数。进入这个阶段后，主线程会检查一下当前时间，是否满足定时器的条件。如果满足就执行回调函数，否则就离开这个阶段。</p>
+<h6 id="I-O-callbacks"><a href="#I-O-callbacks" class="headerlink" title="I/O callbacks"></a>I/O callbacks</h6><p>除了以下操作的回调函数，其他的回调函数都在这个阶段执行。</p>
+<ul>
+<li>setTimeout()和setInterval()的回调函数</li>
+<li>setImmediate()的回调函数</li>
+<li>用于关闭请求的回调函数，比如socket.on(‘close’, …)</li>
+</ul>
+<h6 id="idle，prepare"><a href="#idle，prepare" class="headerlink" title="idle，prepare"></a>idle，prepare</h6><p>libuv内部使用。</p>
+<h6 id="poll"><a href="#poll" class="headerlink" title="poll"></a>poll</h6><p>轮询时间。用于等待还未返回的 I/O 事件，比如服务器的回应、用户移动鼠标等等。</p>
+<p>这个阶段的时间会比较长。如果没有其他异步任务要处理（比如到期的定时器），会一直停留在这个阶段，等待 I/O 请求返回结果。</p>
+<h6 id="check"><a href="#check" class="headerlink" title="check"></a>check</h6><p>执行<code>setImmediate</code>的回调函数。</p>
+<h6 id="close-callbacks"><a href="#close-callbacks" class="headerlink" title="close callbacks"></a>close callbacks</h6><p>执行关闭请求的回调函数，比如<code>socket.on(&#39;close&#39;, ...)</code>。</p>
+<p>![nodejs-event-loop-g]</p>
+<h3 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h3><p>综上，了解了event loop可以提高你对Javascript 运行机制的理解。javascript中的event loop一般用来触发callback、ajax、timers等等异步任务，主要是setTimeout 以及各种callback。node的event loop则更为复杂timers、i/o callback、poll…。</p>
+<h4 id="microtasks-and-macrotasks"><a href="#microtasks-and-macrotasks" class="headerlink" title="microtasks and macrotasks"></a>microtasks and macrotasks</h4><p>examples of microtasks:</p>
+<ul>
+<li>process.nextTick</li>
+<li>promise</li>
+<li>object.observe</li>
+</ul>
+<p>examples of macrotasks:</p>
+<ul>
+<li>setTimeout</li>
+<li>setInterval</li>
+<li>setImmediate</li>
+<li>I/O</li>
+</ul>
+<h3 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h3><ul>
+<li><a href="https://www.youtube.com/watch?v=8aGhZQkoFbQ" target="_blank" rel="noopener">youtube–Philip Roberts: 什么是JavaScript中的事件循环 （Event Loop）</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2014/10/event-loop.html" target="_blank" rel="noopener">阮一峰–JavaScript 运行机制详解：再谈Event Loop</a></li>
+<li><a href="http://www.ruanyifeng.com/blog/2018/02/node-event-loop.html" target="_blank" rel="noopener">阮一峰–Node 定时器详解</a></li>
+<li><a href="https://blog.risingstack.com/node-js-at-scale-understanding-node-js-event-loop/" target="_blank" rel="noopener">Tamas Kadlecsik–Understanding the Node.js Event Loop</a></li>
+</ul>
+
+      
+    </div>
+
+    <div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">------本文结束<i class="fa fa-paw"></i>感谢阅读------</div>
+    
+</div>
+  
+</div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/javascript/" rel="tag"># javascript</a>
+          
+        </div>
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/02/23/浏览器的同源策略和跨域方法/" rel="next" title="浏览器的同源策略和跨域方法">
+                <i class="fa fa-chevron-left"></i> 浏览器的同源策略和跨域方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="http://okuesjok0.bkt.clouddn.com/109951162857314804.jpeg"
+               alt="viviier" />
+          <p class="site-author-name" itemprop="name">viviier</p>
+          <p class="site-description motion-element" itemprop="description">南阳如海</p>
+        </div>
+        <nav class="site-state motion-element">
+          <div class="site-state-item site-state-posts">
+            <a href="/archives">
+              <span class="site-state-item-count">21</span>
+              <span class="site-state-item-name">日志</span>
+            </a>
+          </div>
+
+          
+
+          
+            <div class="site-state-item site-state-tags">
+              <a href="/tags">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+            
+              <span class="links-of-author-item">
+                <a href="https://github.com/viviier" target="_blank" title="GitHub">
+                  
+                    <i class="fa fa-fw fa-github"></i>
+                  
+                  GitHub
+                </a>
+              </span>
+            
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#javacript单线程"><span class="nav-number">1.</span> <span class="nav-text">javacript单线程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#同步和异步"><span class="nav-number">2.</span> <span class="nav-text">同步和异步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#task-quque里有什么"><span class="nav-number">2.1.</span> <span class="nav-text">task quque里有什么</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#关于event-loop"><span class="nav-number">3.</span> <span class="nav-text">关于event loop</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#browser-javascript中的event-loop"><span class="nav-number">3.1.</span> <span class="nav-text">browser javascript中的event loop</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Node-js的Event-loop"><span class="nav-number">4.</span> <span class="nav-text">Node.js的Event loop</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#关于Node-js如何解析js代码"><span class="nav-number">4.1.</span> <span class="nav-text">关于Node.js如何解析js代码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Node的event-loop"><span class="nav-number">4.2.</span> <span class="nav-text">Node的event loop</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#定时器"><span class="nav-number">4.2.1.</span> <span class="nav-text">定时器</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#同步和异步-1"><span class="nav-number">4.3.</span> <span class="nav-text">同步和异步</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#本轮循环、次轮循环"><span class="nav-number">4.4.</span> <span class="nav-text">本轮循环、次轮循环</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#process-nextTick（nextTickQueue）"><span class="nav-number">4.5.</span> <span class="nav-text">process.nextTick（nextTickQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Promise（microTaskQueue）"><span class="nav-number">4.6.</span> <span class="nav-text">Promise（microTaskQueue）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#事件循环的概念"><span class="nav-number">4.7.</span> <span class="nav-text">事件循环的概念</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#六个阶段"><span class="nav-number">4.7.1.</span> <span class="nav-text">六个阶段</span></a><ol class="nav-child"><li class="nav-item nav-level-6"><a class="nav-link" href="#timers"><span class="nav-number">4.7.1.1.</span> <span class="nav-text">timers</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#I-O-callbacks"><span class="nav-number">4.7.1.2.</span> <span class="nav-text">I/O callbacks</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#idle，prepare"><span class="nav-number">4.7.1.3.</span> <span class="nav-text">idle，prepare</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#poll"><span class="nav-number">4.7.1.4.</span> <span class="nav-text">poll</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#check"><span class="nav-number">4.7.1.5.</span> <span class="nav-text">check</span></a></li><li class="nav-item nav-level-6"><a class="nav-link" href="#close-callbacks"><span class="nav-number">4.7.1.6.</span> <span class="nav-text">close callbacks</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#写在最后"><span class="nav-number">5.</span> <span class="nav-text">写在最后</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#microtasks-and-macrotasks"><span class="nav-number">5.1.</span> <span class="nav-text">microtasks and macrotasks</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考链接"><span class="nav-number">6.</span> <span class="nav-text">参考链接</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2016 - 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">viviier</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Muse
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    <div class="back-to-top">
+      <i class="fa fa-arrow-up"></i>
+    </div>
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.0"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.0"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.0"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.0"></script>
+
+
+
+  
+
+
+
+  
+
+
+
+
+	
+
+
+
+
+  
+  
+
+  
+
+  
+
+  
+
+  
+
+
+  <!-- 背景动画 -->
+<script type="text/javascript" src="/js/src/particle.js"></script>
+
+</body>
+</html>

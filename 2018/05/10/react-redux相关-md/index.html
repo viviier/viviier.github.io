@@ -68,7 +68,7 @@
 <link href="/css/main.css?v=5.1.0" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="javascript," />
+  <meta name="keywords" content="viviier" />
 
 
 
@@ -84,18 +84,17 @@
 
 
 
-<meta name="description" content="工厂模式12345678910111213function createPerson(name, age, job) &amp;#123;	var o = new Object();	o.name = name;	o.age = age;	o.job = job;	o.sayName = function() &amp;#123;		console.log(this.name);	&amp;#125;	return o;">
-<meta name="keywords" content="javascript">
+<meta name="description" content="react-redux 做的事情是，将react与redux连接起来，让我们的子组件可以去接收store，以及很方便的去把组件变成容器组件。 ProvierProvider的核心是使用了React的context，将我们传进去的store接收后分发给每一个子组件，整个react组件树就可以通过this.context.store共享一个store，从而摆脱繁琐的props子组件间的通讯。 1234">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Javascript 对象模式">
-<meta property="og:url" content="http://yoursite.com/2016/12/05/Javascript 对象模式/index.html">
+<meta property="og:title" content="react-redux相关.md">
+<meta property="og:url" content="http://yoursite.com/2018/05/10/react-redux相关-md/index.html">
 <meta property="og:site_name" content="viviier">
-<meta property="og:description" content="工厂模式12345678910111213function createPerson(name, age, job) &amp;#123;	var o = new Object();	o.name = name;	o.age = age;	o.job = job;	o.sayName = function() &amp;#123;		console.log(this.name);	&amp;#125;	return o;">
+<meta property="og:description" content="react-redux 做的事情是，将react与redux连接起来，让我们的子组件可以去接收store，以及很方便的去把组件变成容器组件。 ProvierProvider的核心是使用了React的context，将我们传进去的store接收后分发给每一个子组件，整个react组件树就可以通过this.context.store共享一个store，从而摆脱繁琐的props子组件间的通讯。 1234">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2016-12-05T14:49:01.000Z">
+<meta property="og:updated_time" content="2018-05-10T10:16:17.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Javascript 对象模式">
-<meta name="twitter:description" content="工厂模式12345678910111213function createPerson(name, age, job) &amp;#123;	var o = new Object();	o.name = name;	o.age = age;	o.job = job;	o.sayName = function() &amp;#123;		console.log(this.name);	&amp;#125;	return o;">
+<meta name="twitter:title" content="react-redux相关.md">
+<meta name="twitter:description" content="react-redux 做的事情是，将react与redux连接起来，让我们的子组件可以去接收store，以及很方便的去把组件变成容器组件。 ProvierProvider的核心是使用了React的context，将我们传进去的store接收后分发给每一个子组件，整个react组件树就可以通过this.context.store共享一个store，从而摆脱繁琐的props子组件间的通讯。 1234">
 
 
 
@@ -123,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2016/12/05/Javascript 对象模式/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/05/10/react-redux相关-md/"/>
 
 
 
 
 
-  <title> Javascript 对象模式 | viviier </title>
+  <title> react-redux相关.md | viviier </title>
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
@@ -250,7 +249,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2016/12/05/Javascript 对象模式/">
+  <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/10/react-redux相关-md/">
 
   <span style="display:none" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <meta itemprop="name" content="viviier">
@@ -274,7 +273,7 @@
             
             
               
-                Javascript 对象模式
+                react-redux相关.md
               
             
           </h1>
@@ -287,8 +286,8 @@
                 <i class="fa fa-calendar-o"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
-              <time title="Post created" itemprop="dateCreated datePublished" datetime="2016-12-05T22:26:18+08:00">
-                2016-12-05
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2018-05-10T18:15:42+08:00">
+                2018-05-10
               </time>
             
 
@@ -323,10 +322,18 @@
       
 
       
-        <h4 id="工厂模式"><a href="#工厂模式" class="headerlink" title="工厂模式"></a>工厂模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createPerson</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">var</span> o = <span class="keyword">new</span> <span class="built_in">Object</span>();</div><div class="line">	o.name = name;</div><div class="line">	o.age = age;</div><div class="line">	o.job = job;</div><div class="line">	o.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> o;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = newCreatePerson(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div></pre></td></tr></table></figure>
-<h4 id="构造函数模式"><a href="#构造函数模式" class="headerlink" title="构造函数模式"></a>构造函数模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = name;</div><div class="line">	<span class="keyword">this</span>.age = age;</div><div class="line">	<span class="keyword">this</span>.job= job;</div><div class="line">	<span class="keyword">this</span>.sayName = <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();		<span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*	</span></div><div class="line"> * 没有显示地创建对象</div><div class="line"> *	直接将属性和方法复制给了this对象</div><div class="line"> * 将构造函数的作用域赋值给了新对象（因此this就指向了这个新对象）</div><div class="line"> *	没有return语句</div><div class="line"> */</div></pre></td></tr></table></figure>
-<h4 id="原型模式"><a href="#原型模式" class="headerlink" title="原型模式"></a>原型模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params"></span>) </span>&#123;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">	<span class="keyword">constructor</span> = Person;</div><div class="line">	name: 'nico',</div><div class="line">	age: 14,</div><div class="line">	job: 'dog',</div><div class="line">	skills: ['javascript', 'php', 'vue'],</div><div class="line">	sayName: function() &#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person();</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 实例会共享对象</div><div class="line"> */</div></pre></td></tr></table></figure>
-<h4 id="组合使用构造函数模式和原型模式"><a href="#组合使用构造函数模式和原型模式" class="headerlink" title="组合使用构造函数模式和原型模式"></a>组合使用构造函数模式和原型模式</h4><figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">Person</span>(<span class="params">name, age, job</span>) </span>&#123;</div><div class="line">	<span class="keyword">this</span>.name = name;</div><div class="line">	<span class="keyword">this</span>.age = age;</div><div class="line">	<span class="keyword">this</span>.job = job;</div><div class="line">	<span class="keyword">this</span>,skills = [<span class="string">'javascript'</span>, <span class="string">'php'</span>, <span class="string">'vue'</span>]</div><div class="line">&#125;</div><div class="line"></div><div class="line">Person.prototype = &#123;</div><div class="line">	<span class="attr">constructor</span>: Person,</div><div class="line">	<span class="attr">sayName</span>: <span class="function"><span class="keyword">function</span>(<span class="params"></span>) </span>&#123;</div><div class="line">		<span class="built_in">console</span>.log(<span class="keyword">this</span>.name);</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="keyword">var</span> person1 = <span class="keyword">new</span> Person(<span class="string">'nico'</span>);</div><div class="line">person1.sayName();    <span class="comment">// 'nico'</span></div><div class="line"></div><div class="line"><span class="comment">/*</span></div><div class="line"> * 使用构造函数模式定义实例属性</div><div class="line"> * 使用原型模式定义方法和共享的属性</div><div class="line"> * 这样每个实例都会有一份自己的实例属性副本同时共享着方法的引用</div><div class="line"> */</div></pre></td></tr></table></figure>
+        <p><code>react-redux</code> 做的事情是，将react与redux连接起来，让我们的子组件可以去接收store，以及很方便的去把组件变成容器组件。</p>
+<h3 id="Provier"><a href="#Provier" class="headerlink" title="Provier"></a>Provier</h3><p>Provider的核心是使用了React的<code>context</code>，将我们传进去的store接收后分发给每一个子组件，整个react组件树就可以通过<code>this.context.store</code>共享一个store，从而摆脱繁琐的props子组件间的通讯。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// simple-provider</span></div><div class="line"><span class="class"><span class="keyword">class</span> <span class="title">Provider</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">    getChildContext() &#123;</div><div class="line">        <span class="keyword">return</span> &#123;</div><div class="line">            <span class="attr">store</span>: <span class="keyword">this</span>.store</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="keyword">constructor</span>(props, context) &#123;</div><div class="line">        <span class="keyword">super</span>(props, context);</div><div class="line">        <span class="keyword">this</span>.store = props.store;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    render() &#123;</div><div class="line">        <span class="keyword">return</span> Children.only(<span class="keyword">this</span>.props.children);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line">Provider.childrenContextTypes = &#123;</div><div class="line">    <span class="attr">store</span>: PropTypes.Object</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h3 id="connect"><a href="#connect" class="headerlink" title="connect"></a>connect</h3><p>connect则是将一个组件通过hoc的方式把用户定义的mapStateToprops与mapDispatchToProps封装到用户传入的组件里。</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div></pre></td><td class="code"><pre><div class="line"><span class="comment">// simple-connect</span></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">function</span> <span class="title">createConnect</span>(<span class="params">mapStateToProps, mapDispatchToProps, mergeProps</span>) </span>&#123;</div><div class="line">    <span class="keyword">return</span> <span class="function"><span class="keyword">function</span> <span class="title">createWrapper</span>(<span class="params">HOCComponent</span>) </span>&#123;</div><div class="line">        <span class="class"><span class="keyword">class</span> <span class="title">Connect</span> <span class="keyword">extends</span> <span class="title">Component</span> </span>&#123;</div><div class="line">            <span class="keyword">constructor</span>(props, context) &#123;</div><div class="line">                <span class="keyword">super</span>(props, context);</div><div class="line">                <span class="keyword">this</span>.store = context.store;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            componentDidMount() &#123;</div><div class="line">                <span class="keyword">this</span>.unsubscribe = <span class="keyword">this</span>.store.subscribe(<span class="keyword">this</span>.handleChange.bind(<span class="keyword">this</span>));</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            componentUnMount() &#123;</div><div class="line">                <span class="keyword">this</span>.unsubscribe();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            handleChange() &#123;</div><div class="line">                <span class="keyword">this</span>.forceUpdate();</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            render() &#123;</div><div class="line">                <span class="keyword">return</span> (</div><div class="line">                    &lt;HOCComponent</div><div class="line">                        &#123;...this.props&#125;</div><div class="line">                        &#123;...mapStateToProps(this.store.getState(), this.props)&#125;</div><div class="line">                        &#123;...mapDispatchToProps(this.store.dispatch, this.props)&#125;</div><div class="line">                    /&gt;</div><div class="line">                );</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        Connect.contextTypes = &#123;</div><div class="line">            store: PropTypes.Object</div><div class="line">        &#125;;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="相关链接"><a href="#相关链接" class="headerlink" title="相关链接"></a>相关链接</h3><ul>
+<li><a href="https://zhuanlan.zhihu.com/p/32407280" target="_blank" rel="noopener">react-redux 源码分析</a></li>
+<li><a href="https://github.com/reactjs/react-redux/blob/master/src/components/Provider.js" target="_blank" rel="noopener">Provider.js</a></li>
+<li><a href="https://github.com/reactjs/react-redux/blob/master/src/components/connectAdvanced.js" target="_blank" rel="noopener">connectAdvanced.js</a>—<br>title: react-redux相关<br>date: 2018-05-10 18:11:12<br>tags:</li>
+</ul>
+<hr>
+
       
     </div>
 
@@ -357,19 +364,13 @@
 
     <footer class="post-footer">
       
-        <div class="post-tags">
-          
-            <a href="/tags/javascript/" rel="tag"># javascript</a>
-          
-        </div>
-      
 
       
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2016/12/04/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2018/05/03/event-loop/" rel="next" title="event-loop">
+                <i class="fa fa-chevron-left"></i> event-loop
               </a>
             
           </div>
@@ -377,10 +378,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2016/12/06/Javascript 闭包/" rel="prev" title="Javascript 闭包">
-                Javascript 闭包 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -513,7 +510,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#工厂模式"><span class="nav-number">1.</span> <span class="nav-text">工厂模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#构造函数模式"><span class="nav-number">2.</span> <span class="nav-text">构造函数模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#原型模式"><span class="nav-number">3.</span> <span class="nav-text">原型模式</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#组合使用构造函数模式和原型模式"><span class="nav-number">4.</span> <span class="nav-text">组合使用构造函数模式和原型模式</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#Provier"><span class="nav-number">1.</span> <span class="nav-text">Provier</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#connect"><span class="nav-number">2.</span> <span class="nav-text">connect</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关链接"><span class="nav-number">3.</span> <span class="nav-text">相关链接</span></a></li></ol></div>
             
 
           </div>
